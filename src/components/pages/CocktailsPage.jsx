@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
-import CocktailsSearch from "../CoctailsSearch";
+import CocktailsSearch from "../cocktails/CoctailsSearch";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCocktails } from "../../features/cocktails/cocktailsSlice";
-import CocktailesList from "../CocktailesList";
+import CocktailesList from "../cocktails/CocktailesList";
 
-export const HomePage = () => {
+export const CocktailsPage = () => {
   const dispatch = useDispatch();
   const cocktails = useSelector((state) => state.cocktails);
   const [searchParams, setSearchParams] = useState({ search: "", base: "" });

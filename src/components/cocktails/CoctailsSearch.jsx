@@ -1,44 +1,28 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import CocktailsFilterGroup from "./CocktailsFilterGroup";
+import FilterGroup from "../FilterGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBases } from "../features/cocktails/basesSlice";
-import { fetchGroups } from "../features/cocktails/groupsSlice";
-import { fetchSpirits } from "../features/cocktails/spiritsSlice";
-import { fetchTastes } from "../features/cocktails/tastesSlice";
+import { fetchCocktailsBases } from "../../features/cocktails/cocktailsBasesSlice";
+import { fetchCocktailsSpirits } from "../../features/cocktails/cocktailsSpiritsSlice";
+import { fetchCocktailsGroups } from "../../features/cocktails/cocktailsGroupsSlice";
+import { fetchCocktailsTastes } from "../../features/cocktails/cocktailsTastesSlice";
+import SearchInput from "../SearchInput";
 
-const StyledCocktailsSearchInput = styled.input`
-  height: 40px;
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  border: 2px solid #9c9c9c;
-  outline: none;
-  width: 100%;
-  margin-top: 20px;
-  padding: 18px 9px;
-
-  ::placeholder {
-    color: #c4c4c4;
-  }
-`;
 
 const CocktailsSearch = (props) => {
   const { onSearchParamsChange } = props;
   const dispatch = useDispatch();
-  const bases = useSelector((state) => state.bases);
-  const spirits = useSelector((state) => state.spirits);
-  const groups = useSelector((state) => state.groups);
-  const tastes = useSelector((state) => state.tastes);
+  const bases = useSelector((state) => state.cocktailsBases);
+  const spirits = useSelector((state) => state.cocktailsSpirits);
+  const groups = useSelector((state) => state.cocktailsGroups);
+  const tastes = useSelector((state) => state.cocktailsTastes);
 
   const [searchParams, setSearchParams] = useState({ search: "", base: "" });
 
   useEffect(() => {
-    dispatch(fetchBases());
-    dispatch(fetchSpirits());
-    dispatch(fetchGroups());
-    dispatch(fetchTastes());
+    dispatch(fetchCocktailsBases());
+    dispatch(fetchCocktailsSpirits());
+    dispatch(fetchCocktailsGroups());
+    dispatch(fetchCocktailsTastes());
   }, [dispatch]);
 
   useEffect(() => {
@@ -55,32 +39,32 @@ const CocktailsSearch = (props) => {
 
   return (
     <div>
-      <StyledCocktailsSearchInput
+      <SearchInput
         placeholder="Поиск"
         onChange={handleOnSearchChange}
       />
-      <CocktailsFilterGroup
+      <FilterGroup
         filters={bases}
         value={searchParams.base}
         onFilterChange={(value) => {
           handleOnFilterChange("base", value);
         }}
       />
-      <CocktailsFilterGroup
+      <FilterGroup
         filters={spirits}
         value={searchParams.spirit}
         onFilterChange={(value) => {
           handleOnFilterChange("spirit", value);
         }}
       />
-      <CocktailsFilterGroup
+      <FilterGroup
         filters={groups}
         value={searchParams.group}
         onFilterChange={(value) => {
           handleOnFilterChange("group", value);
         }}
       />
-      <CocktailsFilterGroup
+      <FilterGroup
         filters={tastes}
         value={searchParams.taste}
         onFilterChange={(value) => {

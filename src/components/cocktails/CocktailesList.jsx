@@ -3,22 +3,22 @@ import Cocktail from "./Cocktail";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const StyleCocktailsList = styled.div`
+const StyledCocktailsList = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 30px;
 `;
 
 const StyleCocktailsListItem = styled.div`
-  width: 25%;
-  margin-bottom: 30px;
+  width: calc(25% - 20px);
+  margin: 0 10px 30px 10px;
 `;
 
 const CocktailesList = (props) => {
   const { cocktails } = props;
 
   return (
-    <StyleCocktailsList>
+    <StyledCocktailsList>
       {cocktails.map((cocktail) => (
         <StyleCocktailsListItem key={cocktail.id}>
           <Link to={`/cocktails/${cocktail.id}`}>
@@ -26,7 +26,7 @@ const CocktailesList = (props) => {
           </Link>
         </StyleCocktailsListItem>
       ))}
-    </StyleCocktailsList>
+    </StyledCocktailsList>
   );
 };
 

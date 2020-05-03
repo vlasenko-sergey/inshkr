@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledCocktailsFilterGroup = styled.div`
+const StyledFilterGroup = styled.div`
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 `;
 
-const StyledCocktailsFilter = styled.div`
+const StyledFilter = styled.div`
   background: ${({ State }) => (State === "active" && "#E6E6E6") || "#ffffff"};
   border: 0.7px solid #333333;
   box-sizing: border-box;
@@ -17,9 +18,10 @@ const StyledCocktailsFilter = styled.div`
   text-align: center;
   cursor: pointer;
   margin-right: 5px;
+  white-space: nowrap;
 `;
 
-const CocktailsFilterGroup = (props) => {
+const FilterGroup = (props) => {
   const { value, onFilterChange, filters } = props;
 
   const handleFilterClick = (newValue) => {
@@ -27,18 +29,18 @@ const CocktailsFilterGroup = (props) => {
   };
 
   return (
-    <StyledCocktailsFilterGroup>
+    <StyledFilterGroup>
       {filters.map((filter, index) => (
-        <StyledCocktailsFilter
+        <StyledFilter
           key={index}
           State={value === filter && "active"}
           onClick={() => handleFilterClick(filter)}
         >
           {filter}
-        </StyledCocktailsFilter>
+        </StyledFilter>
       ))}
-    </StyledCocktailsFilterGroup>
+    </StyledFilterGroup>
   );
 };
 
-export default CocktailsFilterGroup;
+export default FilterGroup;

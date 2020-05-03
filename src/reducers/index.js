@@ -1,18 +1,28 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import cocktails from "../features/cocktails/cocktailsSlice";
 import cocktail from "../features/cocktails/cocktailSlice";
-import bases from "../features/cocktails/basesSlice";
-import tastes from "../features/cocktails/tastesSlice";
-import spirits from "../features/cocktails/spiritsSlice";
-import groups from "../features/cocktails/groupsSlice";
+import cocktailsBases from "../features/cocktails/cocktailsBasesSlice";
+import cocktailsTastes from "../features/cocktails/cocktailsTastesSlice";
+import cocktailsSpirits from "../features/cocktails/cocktailsSpiritsSlice";
+import cocktailsGroups from "../features/cocktails/cocktailsGroupsSlice";
+import ingredients from "../features/ingredients/ingredientsSlice";
+import ingredient from "../features/ingredients/ingredientSlice";
+import ingredientsTastes from "../features/ingredients/ingredientsTastesSlice";
+import ingredientsSpirits from "../features/ingredients/ingredientsSpiritsSlice";
+import ingredientsGroups from "../features/ingredients/ingredientsGroupsSlice";
 
 const rootReducer = combineReducers({
   cocktails,
   cocktail,
-  bases,
-  tastes,
-  spirits,
-  groups,
+  cocktailsBases,
+  cocktailsTastes,
+  cocktailsSpirits,
+  cocktailsGroups,
+  ingredients,
+  ingredient,
+  ingredientsTastes,
+  ingredientsSpirits,
+  ingredientsGroups,
 });
 
 export default rootReducer;

@@ -11,7 +11,7 @@ export const fetchCocktailById = createAsyncThunk(
 
 const cocktailsSlice = createSlice({
   name: "cocktail",
-  initialState: [],
+  initialState: null,
   reducers: {},
   extraReducers: {
     [fetchCocktailById.pending]: (state, action) => {},
