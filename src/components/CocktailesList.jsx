@@ -1,11 +1,11 @@
 import React from "react";
 import Cocktail from "./Cocktail";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const StyleCocktailsList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   margin-top: 30px;
 `;
 
@@ -21,7 +21,9 @@ const CocktailesList = (props) => {
     <StyleCocktailsList>
       {cocktails.map((cocktail) => (
         <StyleCocktailsListItem key={cocktail.id}>
-          <Cocktail cocktail={cocktail} />
+          <Link to={`/cocktails/${cocktail.id}`}>
+            <Cocktail cocktail={cocktail} />
+          </Link>
         </StyleCocktailsListItem>
       ))}
     </StyleCocktailsList>

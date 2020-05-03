@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 const StyledCocktailImageWrapper = styled.div`
   text-align: center;
+  height: 250px;
 `;
 
 const StyledCocktailImage = styled.img`
-  width: 188px;
-  height: 250px;
+  object-fit: cover;
+  height: 100%;
 `;
 
 const StyledCocktailNameRu = styled.div`
@@ -32,7 +33,7 @@ const Cocktail = (props) => {
     <div>
       <StyledCocktailImageWrapper>
         <StyledCocktailImage
-          src="https://ru.inshaker.com/uploads/cocktail/hires/55/1556107543-negroni-image-final.jpg"
+          src="https://ru.inshaker.com/uploads/cocktail/hires/1098/1537863520-Aperol_spritz-HiRes.jpg"
           alt=""
         />
       </StyledCocktailImageWrapper>
