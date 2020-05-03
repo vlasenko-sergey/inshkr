@@ -18,8 +18,19 @@ const StyledSearchInput = styled.input`
   }
 `;
 
-const SearchInput = () => {
-  return <StyledSearchInput></StyledSearchInput>;
+const SearchInput = (props) => {
+  const { onChange, ...rest } = props;
+
+  const handleInputChange = (event) => {
+    onChange(event.target.value);
+  };
+
+  return (
+    <StyledSearchInput
+      onChange={handleInputChange}
+      {...rest}
+    ></StyledSearchInput>
+  );
 };
 
 export default SearchInput;

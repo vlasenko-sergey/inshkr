@@ -15,7 +15,14 @@ export default class CocktailsService {
     Object.keys(params).forEach(
       (key) => (params[key] == null || params[key] === "") && delete params[key]
     );
-    return axios.get(routes.getCocktails(), { params });
+    return axios.get(routes.getCocktails(), { params }).then(
+      (value) =>
+        new Promise((resolve) =>
+          setTimeout(() => {
+            resolve(value);
+          }, 1000)
+        )
+    );
   }
 
   static getCocktailById(id) {

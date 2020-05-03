@@ -13,7 +13,7 @@ const IngredientsSearch = (props) => {
   const groups = useSelector((state) => state.ingredientsGroups);
   const tastes = useSelector((state) => state.ingredientsTastes);
 
-  const [searchParams, setSearchParams] = useState({ search: "", base: "" });
+  const [searchParams, setSearchParams] = useState({});
 
   useEffect(() => {
     dispatch(fetchIngredientsSpirits());

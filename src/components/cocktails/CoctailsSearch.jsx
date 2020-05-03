@@ -6,6 +6,7 @@ import { fetchCocktailsSpirits } from "../../features/cocktails/cocktailsSpirits
 import { fetchCocktailsGroups } from "../../features/cocktails/cocktailsGroupsSlice";
 import { fetchCocktailsTastes } from "../../features/cocktails/cocktailsTastesSlice";
 import SearchInput from "../SearchInput";
+import debounce from "lodash.debounce";
 
 
 const CocktailsSearch = (props) => {
@@ -16,7 +17,7 @@ const CocktailsSearch = (props) => {
   const groups = useSelector((state) => state.cocktailsGroups);
   const tastes = useSelector((state) => state.cocktailsTastes);
 
-  const [searchParams, setSearchParams] = useState({ search: "", base: "" });
+  const [searchParams, setSearchParams] = useState({});
 
   useEffect(() => {
     dispatch(fetchCocktailsBases());
@@ -29,9 +30,9 @@ const CocktailsSearch = (props) => {
     onSearchParamsChange(searchParams);
   }, [searchParams, onSearchParamsChange]);
 
-  const handleOnSearchChange = (search) => {
+  const handleOnSearchChange = debounce((search) => {
     setSearchParams({ ...searchParams, search });
-  };
+  }, 500);
 
   const handleOnFilterChange = (filterName, filterValue) => {
     setSearchParams({ ...searchParams, [filterName]: filterValue });
