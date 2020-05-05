@@ -7,6 +7,7 @@ import { CocktailPage } from "./components/pages/CocktailPage";
 import PageWrapper from "./components/PageWrapper";
 import { IngredientsPage } from "./components/pages/IngredientsPage";
 import { IngredientPage } from "./components/pages/IngredientPage";
+import { BarIngredientsPage } from "./components/pages/BarIngredientsPage";
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
           </Route>
           <Route exact path="/ingredients/:id">
             <IngredientPage />
+          </Route>
+          <Route exact path="/bar/ingredients">
+            <BarIngredientsPage />
           </Route>
         </Switch>
       </PageWrapper>

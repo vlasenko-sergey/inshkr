@@ -10,6 +10,7 @@ import ingredient from "../features/ingredients/ingredientSlice";
 import ingredientsTastes from "../features/ingredients/ingredientsTastesSlice";
 import ingredientsSpirits from "../features/ingredients/ingredientsSpiritsSlice";
 import ingredientsGroups from "../features/ingredients/ingredientsGroupsSlice";
+import barIngredients from "../features/bar/barIngredientsSlice";
 
 const rootReducer = combineReducers({
   cocktails,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   ingredientsTastes,
   ingredientsSpirits,
   ingredientsGroups,
+  barIngredients,
 });
 
 export default rootReducer;

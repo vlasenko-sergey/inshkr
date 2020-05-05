@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCocktailById } from "../../features/cocktails/cocktailSlice";
+import {
+  fetchCocktailById,
+  resetCocktail,
+} from "../../features/cocktails/cocktailSlice";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Loader from "../Loader";
 
 const StyledCocktailPageMain = styled.div`
   display: flex;
-  margin-top: 20px;
+  margin-top: 40px;
 `;
 
 const StyledCocktailPageImageWrapper = styled.div`
-  width: calc(50% - 50px);
-  margin-right: 50px;
+  width: calc(50% - 20px);
+  margin-right: 20px;
   text-align: center;
 `;
 
@@ -24,7 +28,9 @@ const StyledCocktailPageRecipe = styled.div`
   width: 50%;
   font-size: 18px;
   line-height: 22px;
-  padding-top: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const StyledIngredientWrapper = styled.div`
@@ -52,14 +58,59 @@ const StyledHistoryText = styled.div`
   margin-top: 20px;
 `;
 
+const StyledInfo = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 22px;
+  text-transform: lowercase;
+  margin-top: 20px;
+  align-items: center;
+`;
+
+const StyledInfoCircle = styled.div`
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+  border: 2px solid #000;
+  border-radius: 50%;
+  margin: 0 10px;
+`;
+
+const StyledCocktailPageRecipeTitle = styled.div`
+  font-size: 24px;
+  line-height: 29px;
+  margin-bottom: 25px;
+
+  :not(:first-child) {
+    margin-top: 25px;
+  }
+`;
+
+const StyledCocktailPageRecipeTitleInput = styled.input`
+  width: 35px;
+  text-align: center;
+  font-size: 24px;
+  line-height: 29px;
+`;
+
+const StyledIngredients = styled.div`
+  padding-left: 40px;
+`;
+
 export const CocktailPage = () => {
   const dispatch = useDispatch();
-  const cocktail = useSelector((state) => state.cocktail);
+  const cocktail = useSelector((state) => state.cocktail.item);
+  const isPending = useSelector((state) => state.cocktail.isPending);
   const { id } = useParams();
   const [servingsAmount, setServingsAmount] = useState(1);
 
   useEffect(() => {
     dispatch(fetchCocktailById(id));
+
+    return () => {
+      dispatch(resetCocktail());
+    };
   }, [dispatch, id]);
 
   const handleServingsInputChange = (event) => {
@@ -69,6 +120,10 @@ export const CocktailPage = () => {
     }
   };
 
+  if (isPending) {
+    return <Loader />;
+  }
+
   if (!cocktail) {
     return null;
   }
@@ -77,27 +132,28 @@ export const CocktailPage = () => {
     <div>
       <h1>{cocktail.nameRu}</h1>
       <h2>{cocktail.nameEn}</h2>
-      <div>
+      <StyledInfo>
         <div>{cocktail.base.nameRu}</div>
+        <StyledInfoCircle />
         <div>{cocktail.spirit}%</div>
+        <StyledInfoCircle />
         <div>{cocktail.subgroup}</div>
-      </div>
+      </StyledInfo>
       <StyledCocktailPageMain>
         <StyledCocktailPageImageWrapper>
-          <StyledCocktailPageImage
-            src={cocktail.imageRef}
-            alt=""
-          />
+          <StyledCocktailPageImage src={cocktail.imageRef} alt="" />
         </StyledCocktailPageImageWrapper>
-        {
-          <StyledCocktailPageRecipe>
-            <div>
-              <input
-                type="text"
-                defaultValue="1"
-                onChange={handleServingsInputChange}
-              />
-            </div>
+        <StyledCocktailPageRecipe>
+          <StyledCocktailPageRecipeTitle>
+            На{" "}
+            <StyledCocktailPageRecipeTitleInput
+              type="text"
+              defaultValue="1"
+              onChange={handleServingsInputChange}
+            />{" "}
+            порцию мл:
+          </StyledCocktailPageRecipeTitle>
+          <StyledIngredients>
             {cocktail.recipe
               .filter((item) => item.amount)
               .map((item) => (
@@ -114,11 +170,21 @@ export const CocktailPage = () => {
                   <div>{item.ingredient.nameRu}</div>
                 </StyledIngredientWrapper>
               ))}
+          </StyledIngredients>
+          <StyledCocktailPageRecipeTitle>
+            Способ смешивания:
+          </StyledCocktailPageRecipeTitle>
+          <StyledIngredients>
             <div>{cocktail.mixingMethod}</div>
+          </StyledIngredients>
+          <StyledCocktailPageRecipeTitle>
+            Способ подачи:
+          </StyledCocktailPageRecipeTitle>
+          <StyledIngredients>
             <div>{cocktail.glass.nameRu}</div>
             <div>{cocktail.garnish && cocktail.garnish.nameRu}</div>
-          </StyledCocktailPageRecipe>
-        }
+          </StyledIngredients>
+        </StyledCocktailPageRecipe>
       </StyledCocktailPageMain>
       <div>
         <StyledHistoryHeader>История</StyledHistoryHeader>

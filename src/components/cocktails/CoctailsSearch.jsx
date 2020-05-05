@@ -11,6 +11,8 @@ import styled from "styled-components";
 
 const StyledFilterWrapper = styled.div`
   margin-top: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 const CocktailsSearch = (props) => {

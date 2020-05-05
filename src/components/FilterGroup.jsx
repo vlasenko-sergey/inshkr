@@ -5,6 +5,8 @@ const StyledFilterGroup = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  flex-grow: 1;
+  align-items: center;
 `;
 
 const StyledFilter = styled.div`
