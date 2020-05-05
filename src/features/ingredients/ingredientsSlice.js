@@ -9,17 +9,30 @@ export const fetchIngredients = createAsyncThunk(
   }
 );
 
+const initialState = { pending: false, items: [] };
+
 const ingredientsSlice = createSlice({
   name: "ingredients",
-  initialState: [],
-  reducers: {},
+  initialState: initialState,
+  reducers: {
+    resetIngredients: (state, action) => initialState,
+  },
   extraReducers: {
-    [fetchIngredients.pending]: (state, action) => {},
-    [fetchIngredients.fulfilled]: (state, action) => action.payload,
-    [fetchIngredients.rejected]: (state, action) => {
-      console.log(action);
-    },
+    [fetchIngredients.pending]: (state, action) => ({
+      items: [],
+      isPending: true,
+    }),
+    [fetchIngredients.fulfilled]: (state, action) => ({
+      items: action.payload,
+      isPending: false,
+    }),
+    [fetchIngredients.rejected]: (state, action) => ({
+      ...state,
+      isPending: false,
+    }),
   },
 });
+
+export const { resetIngredients } = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

@@ -1,16 +1,27 @@
 import React, { useEffect, useState, useCallback } from "react";
 import IngredientsSearch from "../ingredients/IngredientsSearch";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchIngredients } from "../../features/ingredients/ingredientsSlice";
+import {
+  fetchIngredients,
+  resetIngredients,
+} from "../../features/ingredients/ingredientsSlice";
 import IngredientsList from "../ingredients/IngredientsList";
+import Loader from "../Loader";
 
 export const IngredientsPage = () => {
   const dispatch = useDispatch();
-  const ingredients = useSelector((state) => state.ingredients);
-  const [searchParams, setSearchParams] = useState({});
+  const ingredients = useSelector((state) => state.ingredients.items);
+  const isPending = useSelector((state) => state.ingredients.isPending);
+  const [searchParams, setSearchParams] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchIngredients(searchParams));
+    if (searchParams) {
+      dispatch(fetchIngredients(searchParams));
+    }
+
+    return () => {
+      dispatch(resetIngredients());
+    };
   }, [dispatch, searchParams]);
 
   const handleSearchParamsChange = useCallback((searchParams) => {
@@ -21,7 +32,10 @@ export const IngredientsPage = () => {
   return (
     <div>
       <IngredientsSearch onSearchParamsChange={handleSearchParamsChange} />
-      <IngredientsList ingredients={ingredients}></IngredientsList>
+      {isPending && <Loader />}
+      {!isPending && (
+        <IngredientsList ingredients={ingredients}></IngredientsList>
+      )}
     </div>
   );
 };

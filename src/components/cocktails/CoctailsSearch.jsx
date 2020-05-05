@@ -7,7 +7,11 @@ import { fetchCocktailsGroups } from "../../features/cocktails/cocktailsGroupsSl
 import { fetchCocktailsTastes } from "../../features/cocktails/cocktailsTastesSlice";
 import SearchInput from "../SearchInput";
 import debounce from "lodash.debounce";
+import styled from "styled-components";
 
+const StyledFilterWrapper = styled.div`
+  margin-top: 20px;
+`;
 
 const CocktailsSearch = (props) => {
   const { onSearchParamsChange } = props;
@@ -40,38 +44,43 @@ const CocktailsSearch = (props) => {
 
   return (
     <div>
-      <SearchInput
-        placeholder="Поиск"
-        onChange={handleOnSearchChange}
-      />
-      <FilterGroup
-        filters={bases}
-        value={searchParams.base}
-        onFilterChange={(value) => {
-          handleOnFilterChange("base", value);
-        }}
-      />
-      <FilterGroup
-        filters={spirits}
-        value={searchParams.spirit}
-        onFilterChange={(value) => {
-          handleOnFilterChange("spirit", value);
-        }}
-      />
-      <FilterGroup
-        filters={groups}
-        value={searchParams.group}
-        onFilterChange={(value) => {
-          handleOnFilterChange("group", value);
-        }}
-      />
-      <FilterGroup
-        filters={tastes}
-        value={searchParams.taste}
-        onFilterChange={(value) => {
-          handleOnFilterChange("taste", value);
-        }}
-      />
+      <SearchInput placeholder="Поиск" onChange={handleOnSearchChange} />
+      <StyledFilterWrapper>
+        <FilterGroup
+          filters={bases}
+          value={searchParams.base}
+          onFilterChange={(value) => {
+            handleOnFilterChange("base", value);
+          }}
+        />
+      </StyledFilterWrapper>
+      <StyledFilterWrapper>
+        <FilterGroup
+          filters={spirits}
+          value={searchParams.spirit}
+          onFilterChange={(value) => {
+            handleOnFilterChange("spirit", value);
+          }}
+        />
+      </StyledFilterWrapper>
+      <StyledFilterWrapper>
+        <FilterGroup
+          filters={groups}
+          value={searchParams.group}
+          onFilterChange={(value) => {
+            handleOnFilterChange("group", value);
+          }}
+        />
+      </StyledFilterWrapper>
+      <StyledFilterWrapper>
+        <FilterGroup
+          filters={tastes}
+          value={searchParams.taste}
+          onFilterChange={(value) => {
+            handleOnFilterChange("taste", value);
+          }}
+        />
+      </StyledFilterWrapper>
     </div>
   );
 };

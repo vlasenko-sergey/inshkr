@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getRandomCocktailImage } from "./imageStubs";
 
 const routes = {
   getCocktails: () => "/cocktails",
@@ -19,14 +20,29 @@ export default class CocktailsService {
       (value) =>
         new Promise((resolve) =>
           setTimeout(() => {
-            resolve(value);
+            resolve(
+              value.map((item) => ({
+                ...item,
+                imageRef: getRandomCocktailImage(),
+              }))
+            );
           }, 1000)
         )
     );
   }
 
   static getCocktailById(id) {
-    return axios.get(routes.getCocktailById(id));
+    return axios.get(routes.getCocktailById(id)).then(
+      (value) =>
+        new Promise((resolve) =>
+          setTimeout(() => {
+            resolve({
+              ...value,
+              imageRef: getRandomCocktailImage(),
+            });
+          }, 1000)
+        )
+    );
   }
 
   static getBases() {

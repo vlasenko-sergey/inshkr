@@ -9,12 +9,19 @@ export const fetchCocktails = createAsyncThunk(
   }
 );
 
+const initialState = { items: [], isPending: false };
+
 const cocktailsSlice = createSlice({
   name: "cocktails",
-  initialState: { items: [], isPending: false },
-  reducers: {},
+  initialState: initialState,
+  reducers: {
+    resetCocktails: (state, action) => initialState,
+  },
   extraReducers: {
-    [fetchCocktails.pending]: (state, action) => ({ items: [], isPending: true }),
+    [fetchCocktails.pending]: (state, action) => ({
+      items: [],
+      isPending: true,
+    }),
     [fetchCocktails.fulfilled]: (state, action) => ({
       items: action.payload,
       isPending: false,
@@ -25,5 +32,7 @@ const cocktailsSlice = createSlice({
     }),
   },
 });
+
+export const { resetCocktails } = cocktailsSlice.actions;
 
 export default cocktailsSlice.reducer;

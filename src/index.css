@@ -19,6 +19,6 @@ code {
 
 a {
   text-decoration: none;
-  cursor: inherit;
+  cursor: pointer;
   color: inherit;
 }

@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import CocktailsSearch from "../cocktails/CoctailsSearch";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCocktails } from "../../features/cocktails/cocktailsSlice";
+import {
+  fetchCocktails,
+  resetCocktails,
+} from "../../features/cocktails/cocktailsSlice";
 import CocktailesList from "../cocktails/CocktailesList";
 import Loader from "../Loader";
 
@@ -9,10 +12,16 @@ export const CocktailsPage = () => {
   const dispatch = useDispatch();
   const cocktails = useSelector((state) => state.cocktails.items);
   const isPending = useSelector((state) => state.cocktails.isPending);
-  const [searchParams, setSearchParams] = useState({});
+  const [searchParams, setSearchParams] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchCocktails(searchParams));
+    if (searchParams) {
+      dispatch(fetchCocktails(searchParams));
+    }
+
+    return () => {
+      dispatch(resetCocktails());
+    };
   }, [dispatch, searchParams]);
 
   const handleSearchParamsChange = useCallback((searchParams) => {

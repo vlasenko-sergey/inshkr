@@ -4,11 +4,16 @@ import styled from "styled-components";
 const StyledIngredientImageWrapper = styled.div`
   text-align: center;
   height: 250px;
+  overflow: hidden;
+  position: relative;
 `;
 
 const StyledIngredientImage = styled.img`
-  object-fit: cover;
   height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const StyledIngredientNameRu = styled.div`
@@ -32,10 +37,7 @@ const Ingredient = (props) => {
   return (
     <div>
       <StyledIngredientImageWrapper>
-        <StyledIngredientImage
-          src="https://ru.inshaker.com/uploads/good/image_common/62/1587386612-WOODFORD_STRAIGHT_BOURBON_WHISKEY_460%D1%85865.jpg"
-          alt=""
-        />
+        <StyledIngredientImage src={ingredient.imageRef} alt="" />
       </StyledIngredientImageWrapper>
       <StyledIngredientNameRu>{ingredient.nameRu}</StyledIngredientNameRu>
       <StyledIngredientNameEn>{ingredient.nameEn}</StyledIngredientNameEn>

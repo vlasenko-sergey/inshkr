@@ -19,6 +19,7 @@ const StyledFilter = styled.div`
   cursor: pointer;
   margin-right: 5px;
   white-space: nowrap;
+  margin-bottom: 5px;
 `;
 
 const FilterGroup = (props) => {

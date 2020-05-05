@@ -11,7 +11,7 @@ const StyledIngredientsList = styled.div`
 
 const StyleIngredientsListItem = styled.div`
   width: calc(25% - 20px);
-  margin: 0 10px 30px 10px;
+  margin: 0 10px 40px 10px;
 `;
 
 const IngredientsList = (props) => {

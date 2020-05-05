@@ -12,11 +12,12 @@ const StyledCocktailPageMain = styled.div`
 const StyledCocktailPageImageWrapper = styled.div`
   width: calc(50% - 50px);
   margin-right: 50px;
+  text-align: center;
 `;
 
 const StyledCocktailPageImage = styled.img`
-  width: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 470px;
 `;
 
 const StyledCocktailPageRecipe = styled.div`
@@ -84,7 +85,7 @@ export const CocktailPage = () => {
       <StyledCocktailPageMain>
         <StyledCocktailPageImageWrapper>
           <StyledCocktailPageImage
-            src="https://us.inshaker.com/uploads/cocktail/hires/29/1556446379-kosmopoliten-image-final.jpg"
+            src={cocktail.imageRef}
             alt=""
           />
         </StyledCocktailPageImageWrapper>

@@ -6,7 +6,7 @@ const StyledPageWrapper = styled.div`
     flex-grow: 1;
     width: 1000px;
     margin: auto;
-    padding: 40px 60px;
+    padding: 26px 60px;
 `;
 
 const PageWrapper = (props) => {
