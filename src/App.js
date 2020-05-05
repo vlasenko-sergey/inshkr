@@ -8,6 +8,7 @@ import PageWrapper from "./components/PageWrapper";
 import { IngredientsPage } from "./components/pages/IngredientsPage";
 import { IngredientPage } from "./components/pages/IngredientPage";
 import { BarIngredientsPage } from "./components/pages/BarIngredientsPage";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           </Route>
         </Switch>
       </PageWrapper>
+      <Footer />
     </Router>
   );
 }
