@@ -2,21 +2,21 @@ import React, { useEffect, useState, useCallback } from "react";
 import CocktailsSearch from "../cocktails/CoctailsSearch";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchCocktails,
   resetCocktails,
+  searchCocktails,
 } from "../../features/cocktails/cocktailsSlice";
-import CocktailesList from "../cocktails/CocktailesList";
+import CocktailsList from "../cocktails/CocktailsList";
 import Loader from "../Loader";
 
 export const CocktailsPage = () => {
   const dispatch = useDispatch();
   const cocktails = useSelector((state) => state.cocktails.items);
   const isPending = useSelector((state) => state.cocktails.isPending);
-  const [searchParams, setSearchParams] = useState(null);
+  const [searchParams, setSearchParams] = useState({tastes: []});
 
   useEffect(() => {
     if (searchParams) {
-      dispatch(fetchCocktails(searchParams));
+      dispatch(searchCocktails(searchParams));
     }
 
     return () => {
@@ -25,7 +25,6 @@ export const CocktailsPage = () => {
   }, [dispatch, searchParams]);
 
   const handleSearchParamsChange = useCallback((searchParams) => {
-    console.log(searchParams);
     setSearchParams(searchParams);
   }, []);
 
@@ -33,7 +32,7 @@ export const CocktailsPage = () => {
     <div>
       <CocktailsSearch onSearchParamsChange={handleSearchParamsChange} />
       {isPending && <Loader />}
-      {!isPending && <CocktailesList cocktails={cocktails}></CocktailesList>}
+      {!isPending && <CocktailsList cocktails={cocktails}></CocktailsList>}
     </div>
   );
 };

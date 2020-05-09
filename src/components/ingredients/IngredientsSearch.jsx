@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import FilterGroup from "../FilterGroup";
 import { useDispatch, useSelector } from "react-redux";
 import SearchInput from "../SearchInput";
-import { fetchIngredientsSpirits } from "../../features/ingredients/ingredientsSpiritsSlice";
-import { fetchIngredientssGroups } from "../../features/ingredients/ingredientsGroupsSlice";
-import { fetchIngredientsTastes } from "../../features/ingredients/ingredientsTastesSlice";
 import styled from "styled-components";
+import { fetchIngredientsProperties } from "../../features/ingredients/ingredientsPropertiesSlice";
+import debounce from "lodash.debounce";
 
 const StyledFilterWrapper = styled.div`
   margin-top: 20px;
@@ -14,25 +13,23 @@ const StyledFilterWrapper = styled.div`
 const IngredientsSearch = (props) => {
   const { onSearchParamsChange } = props;
   const dispatch = useDispatch();
-  const spirits = useSelector((state) => state.ingredientsSpirits);
-  const groups = useSelector((state) => state.ingredientsGroups);
-  const tastes = useSelector((state) => state.ingredientsTastes);
+  const spirits = useSelector((state) => state.ingredientsProperties.items.spirits);
+  const groups = useSelector((state) => state.ingredientsProperties.items.groups);
+  const tastes = useSelector((state) => state.ingredientsProperties.items.tastes);
 
-  const [searchParams, setSearchParams] = useState({});
+  const [searchParams, setSearchParams] = useState({tastes: []});
 
   useEffect(() => {
-    dispatch(fetchIngredientsSpirits());
-    dispatch(fetchIngredientssGroups());
-    dispatch(fetchIngredientsTastes());
+    dispatch(fetchIngredientsProperties());
   }, [dispatch]);
 
   useEffect(() => {
     onSearchParamsChange(searchParams);
   }, [searchParams, onSearchParamsChange]);
 
-  const handleOnSearchChange = (search) => {
-    setSearchParams({ ...searchParams, search });
-  };
+  const handleOnSearchChange = debounce((keyword) => {
+    setSearchParams({ ...searchParams, keyword });
+  }, 500);
 
   const handleOnFilterChange = (filterName, filterValue) => {
     setSearchParams({ ...searchParams, [filterName]: filterValue });
@@ -62,10 +59,11 @@ const IngredientsSearch = (props) => {
       <StyledFilterWrapper>
         <FilterGroup
           filters={tastes}
-          value={searchParams.taste}
+          value={searchParams.tastes}
           onFilterChange={(value) => {
-            handleOnFilterChange("taste", value);
+            handleOnFilterChange("tastes", value);
           }}
+          multiple
         />
       </StyledFilterWrapper>
     </div>

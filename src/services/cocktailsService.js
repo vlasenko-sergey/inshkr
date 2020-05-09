@@ -1,63 +1,30 @@
 import axios from "axios";
-import { getRandomCocktailImage } from "./imageStubs";
 
 const routes = {
   getCocktails: () => "/cocktails",
+  searchCocktails: () => "/cocktails/search",
   getCocktailById: (id) => `/cocktails/${id}`,
-  getBases: () => "/cocktails/bases",
-  getTastes: () => "/cocktails/tastes",
-  getSpirits: () => "/cocktails/spirits",
-  getGroups: () => "/cocktails/groups",
+  getCocktailsProperties: () => "/cocktails/properties",
 };
 
 export default class CocktailsService {
-  static getCocktails(searchParams) {
+  static getCocktails() {
+    return axios.get(routes.getCocktails());
+  }
+
+  static searchCocktails(searchParams) {
     const params = { ...searchParams };
     Object.keys(params).forEach(
       (key) => (params[key] == null || params[key] === "") && delete params[key]
     );
-    return axios.get(routes.getCocktails(), { params }).then(
-      (value) =>
-        new Promise((resolve) =>
-          setTimeout(() => {
-            resolve(
-              value.map((item) => ({
-                ...item,
-                imageRef: getRandomCocktailImage(),
-              }))
-            );
-          }, 1000)
-        )
-    );
+    return axios.get(routes.searchCocktails(), { params });
   }
 
   static getCocktailById(id) {
-    return axios.get(routes.getCocktailById(id)).then(
-      (value) =>
-        new Promise((resolve) =>
-          setTimeout(() => {
-            resolve({
-              ...value,
-              imageRef: getRandomCocktailImage(),
-            });
-          }, 1000)
-        )
-    );
+    return axios.get(routes.getCocktailById(id));
   }
 
-  static getBases() {
-    return axios.get(routes.getBases());
-  }
-
-  static getTastes() {
-    return axios.get(routes.getTastes());
-  }
-
-  static getSpirits() {
-    return axios.get(routes.getSpirits());
-  }
-
-  static getGroups() {
-    return axios.get(routes.getGroups());
+  static getCocktailsProperties() {
+    return axios.get(routes.getCocktailsProperties());
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -7,6 +7,11 @@ import {
   fetchIngredientById,
   resetIngredient,
 } from "../../features/ingredients/ingredientSlice";
+import { ReactComponent as AddToBarIcon } from "../../images/add_to_bar.svg";
+import {
+  deleteIngredientFromBar,
+  addIngredientToBar,
+} from "../../features/bar/barIngredientsSlice";
 
 const StyledIngredientPageMain = styled.div`
   display: flex;
@@ -67,10 +72,39 @@ const StyledIngredients = styled.div`
   text-indent: 40px;
 `;
 
+const StyledIngredientPage = styled.div`
+  position: relative;
+`;
+
+const StyledAddToBarIcon = styled.div`
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+
+  svg {
+    width: 40px;
+    height: 40px;
+
+    path {
+      stroke: #888888;
+      fill: #888888;
+    }
+
+    ${({ active }) =>
+      active &&
+      ` path {
+      fill: #000000;
+      stroke: #000000;
+    }
+    `}
+  }
+`;
+
 export const IngredientPage = () => {
   const dispatch = useDispatch();
   const ingredient = useSelector((state) => state.ingredient.item);
   const isPending = useSelector((state) => state.ingredient.isPending);
+  const [isInBar, setIsInBar] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -81,6 +115,21 @@ export const IngredientPage = () => {
     };
   }, [dispatch, id]);
 
+  useEffect(() => {
+    if (ingredient) {
+      setIsInBar(ingredient.inBar);
+    }
+  }, [ingredient]);
+
+  const handleAddToBarClick = () => {
+    if (isInBar) {
+      dispatch(deleteIngredientFromBar(ingredient.id));
+    } else {
+      dispatch(addIngredientToBar(ingredient.id));
+    }
+    setIsInBar(!isInBar);
+  };
+
   if (isPending) {
     return <Loader />;
   }
@@ -90,15 +139,21 @@ export const IngredientPage = () => {
   }
 
   return (
-    <div>
+    <StyledIngredientPage>
+      <StyledAddToBarIcon
+        onClick={handleAddToBarClick}
+        active={isInBar}
+      >
+        <AddToBarIcon />
+      </StyledAddToBarIcon>
       <h1>{ingredient.nameRu}</h1>
       <h2>{ingredient.nameEn}</h2>
       <StyledInfo>
         <div>{ingredient.spirit}%</div>
         <StyledInfoCircle />
-        <div>{ingredient.subgroup}</div>
+        <div>{ingredient.itemSubgroup.name}</div>
         <StyledInfoCircle />
-        <div>{ingredient.ingredientGroup}</div>
+        <div>{ingredient.itemSubgroup.itemGroup.name}</div>
       </StyledInfo>
       <StyledIngredientPageMain>
         <StyledIngredientPageImageWrapper>
@@ -108,11 +163,9 @@ export const IngredientPage = () => {
           <StyledIngredientPageRecipeTitle>
             Описание
           </StyledIngredientPageRecipeTitle>
-          <StyledIngredients>
-            {ingredient.legend}
-          </StyledIngredients>
+          <StyledIngredients>{ingredient.legend}</StyledIngredients>
         </StyledIngredientPageRecipe>
       </StyledIngredientPageMain>
-    </div>
+    </StyledIngredientPage>
   );
 };

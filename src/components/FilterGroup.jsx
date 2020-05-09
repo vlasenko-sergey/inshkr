@@ -25,10 +25,28 @@ const StyledFilter = styled.div`
 `;
 
 const FilterGroup = (props) => {
-  const { value, onFilterChange, filters } = props;
+  const { value, onFilterChange, filters, multiple } = props;
 
   const handleFilterClick = (newValue) => {
-    onFilterChange(value === newValue ? "" : newValue);
+    if (multiple) {
+      const index = value.findIndex((item) => item === newValue);
+      if (index > -1) {
+        const newValueArray = [...value];
+        newValueArray.splice(index, 1);
+        onFilterChange(newValueArray);
+      } else {
+        onFilterChange([...value, newValue]);
+      }
+    } else {
+      onFilterChange(value === newValue ? null : newValue);
+    }
+  };
+
+  const isFilterActive = (filter) => {
+    if (multiple) {
+      return value && value.includes(filter.id);
+    }
+    return value === filter.id;
   };
 
   return (
@@ -36,10 +54,10 @@ const FilterGroup = (props) => {
       {filters.map((filter, index) => (
         <StyledFilter
           key={index}
-          State={value === filter && "active"}
-          onClick={() => handleFilterClick(filter)}
+          State={isFilterActive(filter) && "active"}
+          onClick={() => handleFilterClick(filter.id)}
         >
-          {filter}
+          {filter.name}
         </StyledFilter>
       ))}
     </StyledFilterGroup>

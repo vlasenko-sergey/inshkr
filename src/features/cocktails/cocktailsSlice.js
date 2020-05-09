@@ -3,8 +3,16 @@ import CocktailsService from "../../services/cocktailsService";
 
 export const fetchCocktails = createAsyncThunk(
   "cocktails/fetchAll",
+  async () => {
+    const cocktails = await CocktailsService.getCocktails();
+    return cocktails;
+  }
+);
+
+export const searchCocktails = createAsyncThunk(
+  "cocktails/fetchAll",
   async (searchParams) => {
-    const cocktails = await CocktailsService.getCocktails(searchParams);
+    const cocktails = await CocktailsService.searchCocktails(searchParams);
     return cocktails;
   }
 );
@@ -27,6 +35,18 @@ const cocktailsSlice = createSlice({
       isPending: false,
     }),
     [fetchCocktails.rejected]: (state, action) => ({
+      ...state,
+      isPending: false,
+    }),
+    [searchCocktails.pending]: (state, action) => ({
+      items: [],
+      isPending: true,
+    }),
+    [searchCocktails.fulfilled]: (state, action) => ({
+      items: action.payload,
+      isPending: false,
+    }),
+    [searchCocktails.rejected]: (state, action) => ({
       ...state,
       isPending: false,
     }),
