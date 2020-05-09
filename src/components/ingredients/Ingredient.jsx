@@ -63,8 +63,7 @@ const StyledAddToFavoriteIcon = styled.div`
 `;
 
 const Ingredient = (props) => {
-  const { ingredient } = props;
-  const isFavoriteModeOn = true;
+  const { ingredient, isFavoriteModeOn } = props;
 
   return (
     <StyledIngredient isFavoriteModeOn={isFavoriteModeOn}>

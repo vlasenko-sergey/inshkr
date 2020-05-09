@@ -44,7 +44,7 @@ h2 {
   width: 142px;
   height: 40px;
   margin: -20px 0 0 -71px;
-  background: #fff;
+  background: transparent;
   filter: contrast(20);
 }
 .gooey .dot {
@@ -114,4 +114,8 @@ h2 {
   50% {
     transform: translateX(-31px);
   }
+}
+
+.auth-modal {
+  width: 300px;
 }

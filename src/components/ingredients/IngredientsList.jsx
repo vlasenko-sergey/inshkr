@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Ingredient from "./Ingredient";
@@ -57,20 +57,31 @@ const StyledAddFavoriteButtonText = styled.div`
 `;
 
 const IngredientsList = (props) => {
-  const { ingredients, onAddButtonClick, isAddButtonShown } = props;
+  const { ingredients, isAddButtonShown } = props;
+
+  const [isFavoriteModeOn, setIsFavoriteModeOn] = useState(false);
+
+  const handleAddButtonClick = (event) => {
+    setIsFavoriteModeOn(true);
+  };
 
   return (
     <StyledIngredientsList>
-      {isAddButtonShown && <StyledAddFavoriteButton onClick={onAddButtonClick}>
-        <StyledAddFavoriteButtonIconWrapper>
-          <StyledAddFavoriteButtonIcon>+</StyledAddFavoriteButtonIcon>
-        </StyledAddFavoriteButtonIconWrapper>
-        <StyledAddFavoriteButtonText>Новый</StyledAddFavoriteButtonText>
-      </StyledAddFavoriteButton>}
+      {isAddButtonShown && !isFavoriteModeOn && (
+        <StyledAddFavoriteButton onClick={handleAddButtonClick}>
+          <StyledAddFavoriteButtonIconWrapper>
+            <StyledAddFavoriteButtonIcon>+</StyledAddFavoriteButtonIcon>
+          </StyledAddFavoriteButtonIconWrapper>
+          <StyledAddFavoriteButtonText>Новый</StyledAddFavoriteButtonText>
+        </StyledAddFavoriteButton>
+      )}
       {ingredients.map((ingredient) => (
         <StyleIngredientsListItem key={ingredient.id}>
           <Link to={`/ingredients/${ingredient.id}`}>
-            <Ingredient ingredient={ingredient} />
+            <Ingredient
+              isFavoriteModeOn={isFavoriteModeOn}
+              ingredient={ingredient}
+            />
           </Link>
         </StyleIngredientsListItem>
       ))}

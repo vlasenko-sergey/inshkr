@@ -14,9 +14,9 @@ export const BarIngredientsPage = () => {
   const isPending = useSelector((state) => state.barIngredients.isPending);
 
   useEffect(() => {
-    dispatch(fetchBarIngredients());
+    //dispatch(fetchBarIngredients());
     return () => {
-      dispatch(resetIngredients());
+     // dispatch(resetIngredients());
     };
   }, [dispatch]);
 
@@ -24,13 +24,13 @@ export const BarIngredientsPage = () => {
     console.log('yaay');
   }
 
-
   return (
     <div>
-      {isPending && <Loader />}
+      {/* {isPending && <Loader />}
       {!isPending && (
         <IngredientsList onAddButtonClick={handleAddButtonClick } ingredients={ingredients}></IngredientsList>
-      )}
+      )} */}
+      bar ing
     </div>
   );
 };

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import AuthModal from "./modals/AuthModal";
 
 const StyledHeader = styled.div`
   height: 60px;
@@ -53,18 +54,30 @@ const StyledHeaderAccount = styled.div`
 `;
 
 const Header = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const handleAuthButtonClick = () => {
+    setIsAuthModalOpen(true);
+  };
+
   return (
-    <StyledHeader>
-      <StyledHeaderContent>
-        <StyledHeaderTitle>InShKR</StyledHeaderTitle>
-        <StyledHeaderMenu>
-          <Link to="/cocktails">Коктейли</Link>
-          <StyledHeaderMenuDivider />
-          <Link to="/ingredients">Ингредиенты</Link>
-        </StyledHeaderMenu>
-        <StyledHeaderAccount />
-      </StyledHeaderContent>
-    </StyledHeader>
+    <>
+      <AuthModal isOpen={isAuthModalOpen} setIsOpen={setIsAuthModalOpen} />
+      <StyledHeader>
+        <StyledHeaderContent>
+          <StyledHeaderTitle>
+            <Link to="/">InShKR</Link>
+          </StyledHeaderTitle>
+          <StyledHeaderMenu>
+            <Link to="/cocktails">Коктейли</Link>
+            <StyledHeaderMenuDivider />
+            <Link to="/ingredients">Ингредиенты</Link>
+          </StyledHeaderMenu>
+          <StyledHeaderAccount />
+          {/* <div onClick={handleAuthButtonClick}>Войти</div> */}
+        </StyledHeaderContent>
+      </StyledHeader>
+    </>
   );
 };
 

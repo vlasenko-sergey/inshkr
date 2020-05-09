@@ -7,6 +7,8 @@ import {
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Loader from "../Loader";
+import { ReactComponent as AddToFavoriteIcon } from "../../images/add_to_favorite.svg";
+import { addToFavorites } from "../../features/favorites/favoritesSlice";
 
 const StyledCocktailPageMain = styled.div`
   display: flex;
@@ -98,6 +100,26 @@ const StyledIngredients = styled.div`
   padding-left: 40px;
 `;
 
+const StyledAddToFavoriteIcon = styled.div`
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+
+  svg {
+    width: 40px;
+    height: 40px;
+
+    path {
+      stroke: #ededed;
+      fill: #ededed;
+    }
+  }
+`;
+
+const StyledCocktailPage = styled.div`
+  position: relative;
+`;
+
 export const CocktailPage = () => {
   const dispatch = useDispatch();
   const cocktail = useSelector((state) => state.cocktail.item);
@@ -120,6 +142,10 @@ export const CocktailPage = () => {
     }
   };
 
+  const handleAddToFavoriteClick = () => {
+    dispatch(addToFavorites(cocktail.id));
+  };
+
   if (isPending) {
     return <Loader />;
   }
@@ -129,7 +155,10 @@ export const CocktailPage = () => {
   }
 
   return (
-    <div>
+    <StyledCocktailPage>
+      <StyledAddToFavoriteIcon onClick={handleAddToFavoriteClick}>
+        <AddToFavoriteIcon />
+      </StyledAddToFavoriteIcon>
       <h1>{cocktail.nameRu}</h1>
       <h2>{cocktail.nameEn}</h2>
       <StyledInfo>
@@ -190,6 +219,6 @@ export const CocktailPage = () => {
         <StyledHistoryHeader>История</StyledHistoryHeader>
         <StyledHistoryText>{cocktail.legend}</StyledHistoryText>
       </div>
-    </div>
+    </StyledCocktailPage>
   );
 };
