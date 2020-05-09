@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ReactComponent as AddToFavoriteIcon } from "../../images/add_to_favorite.svg";
 
 const StyledIngredientImageWrapper = styled.div`
   text-align: center;
@@ -31,17 +32,55 @@ const StyledIngredientNameEn = styled.div`
   text-align: center;
 `;
 
+const StyledIngredientFavoriteMode = styled.div`
+  position: relative;
+`;
+
+const StyledIngredientDefault = styled.div``;
+
+const StyledIngredient = (props) =>
+  props.isFavoriteModeOn ? (
+    <StyledIngredientFavoriteMode>
+      {props.children}
+    </StyledIngredientFavoriteMode>
+  ) : (
+    <StyledIngredientDefault>{props.children}</StyledIngredientDefault>
+  );
+
+const StyledFavoriteModeWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+`;
+
+const StyledAddToFavoriteIcon = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 const Ingredient = (props) => {
   const { ingredient } = props;
+  const isFavoriteModeOn = true;
 
   return (
-    <div>
+    <StyledIngredient isFavoriteModeOn={isFavoriteModeOn}>
+      {isFavoriteModeOn && (
+        <StyledFavoriteModeWrapper>
+          <StyledAddToFavoriteIcon>
+            <AddToFavoriteIcon />
+          </StyledAddToFavoriteIcon>
+        </StyledFavoriteModeWrapper>
+      )}
       <StyledIngredientImageWrapper>
         <StyledIngredientImage src={ingredient.imageRef} alt="" />
       </StyledIngredientImageWrapper>
       <StyledIngredientNameRu>{ingredient.nameRu}</StyledIngredientNameRu>
       <StyledIngredientNameEn>{ingredient.nameEn}</StyledIngredientNameEn>
-    </div>
+    </StyledIngredient>
   );
 };
 

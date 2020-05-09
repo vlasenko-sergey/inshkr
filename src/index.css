@@ -22,3 +22,7 @@ a {
   cursor: pointer;
   color: inherit;
 }
+
+button {
+  font-family: Montserrat;
+}

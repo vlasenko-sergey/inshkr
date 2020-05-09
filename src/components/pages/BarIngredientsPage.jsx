@@ -12,29 +12,24 @@ export const BarIngredientsPage = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.barIngredients.items);
   const isPending = useSelector((state) => state.barIngredients.isPending);
-  const [searchParams, setSearchParams] = useState(null);
 
   useEffect(() => {
-    if (searchParams) {
-      dispatch(fetchBarIngredients());
-    }
-
+    dispatch(fetchBarIngredients());
     return () => {
       dispatch(resetIngredients());
     };
-  }, [dispatch, searchParams]);
+  }, [dispatch]);
 
-  const handleSearchParamsChange = useCallback((searchParams) => {
-    console.log(searchParams);
-    setSearchParams(searchParams);
-  }, []);
+  const handleAddButtonClick = () => {
+    console.log('yaay');
+  }
+
 
   return (
     <div>
-      <IngredientsSearch onSearchParamsChange={handleSearchParamsChange} />
       {isPending && <Loader />}
       {!isPending && (
-        <IngredientsList ingredients={ingredients}></IngredientsList>
+        <IngredientsList onAddButtonClick={handleAddButtonClick } ingredients={ingredients}></IngredientsList>
       )}
     </div>
   );

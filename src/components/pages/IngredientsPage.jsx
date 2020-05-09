@@ -34,7 +34,7 @@ export const IngredientsPage = () => {
       <IngredientsSearch onSearchParamsChange={handleSearchParamsChange} />
       {isPending && <Loader />}
       {!isPending && (
-        <IngredientsList ingredients={ingredients}></IngredientsList>
+        <IngredientsList isAddButtonShown ingredients={ingredients}></IngredientsList>
       )}
     </div>
   );
