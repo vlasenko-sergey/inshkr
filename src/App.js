@@ -7,11 +7,11 @@ import { CocktailPage } from "./components/pages/CocktailPage";
 import PageWrapper from "./components/PageWrapper";
 import { IngredientsPage } from "./components/pages/IngredientsPage";
 import { IngredientPage } from "./components/pages/IngredientPage";
-import { BarIngredientsPage } from "./components/pages/BarIngredientsPage";
 import Footer from "./components/Footer";
 import HomeUserPage from "./components/pages/HomeUserPage";
 import BarPage from "./components/pages/BarPage";
-import FavoritePage from "./components/pages/FavoritePage";
+import BarMyRecipesPage from "./components/pages/BarMyRecipesPage";
+import BarCreateCocktailPage from "./components/pages/BarCreateCocktailPage";
 
 function App() {
   return (
@@ -34,11 +34,14 @@ function App() {
           <Route exact path="/ingredients/:id">
             <IngredientPage />
           </Route>
-          <Route path="/bar" >
+          <Route path="/bar">
             <BarPage />
           </Route>
-          <Route path="/favorite">
-            <FavoritePage />
+          <Route exact path="/my-recipes">
+            <BarMyRecipesPage />
+          </Route>
+          <Route exact path="/my-recipes/create">
+            <BarCreateCocktailPage />
           </Route>
         </Switch>
       </PageWrapper>
