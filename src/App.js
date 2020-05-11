@@ -12,6 +12,9 @@ import HomeUserPage from "./components/pages/HomeUserPage";
 import BarPage from "./components/pages/BarPage";
 import BarMyRecipesPage from "./components/pages/BarMyRecipesPage";
 import BarCreateCocktailPage from "./components/pages/BarCreateCocktailPage";
+import PartiesPage from "./components/pages/PartiesPage";
+import CreatePartyPage from "./components/pages/CreatePartyPage";
+import PartyPage from "./components/pages/PartyPage";
 
 function App() {
   return (
@@ -42,6 +45,15 @@ function App() {
           </Route>
           <Route exact path="/my-recipes/create">
             <BarCreateCocktailPage />
+          </Route>
+          <Route exact path="/parties">
+            <PartiesPage />
+          </Route>
+          <Route exact path="/parties/create">
+            <CreatePartyPage />
+          </Route>
+          <Route exact path="/parties/:id">
+            <PartyPage />
           </Route>
         </Switch>
       </PageWrapper>

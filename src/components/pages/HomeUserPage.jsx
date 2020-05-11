@@ -30,7 +30,7 @@ const HomeUserPage = () => {
         <Link to="/my-recipes">Мои рецепты</Link>
       </StyledLink>
       <StyledLink>
-        <Link to="/podborki">Подборки</Link>
+        <Link to="/parties">Подборки</Link>
       </StyledLink>
     </div>
   );

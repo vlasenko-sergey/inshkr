@@ -33,7 +33,9 @@ const CocktailsSearch = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    onSearchParamsChange(searchParams);
+    if (onSearchParamsChange) {
+      onSearchParamsChange(searchParams);
+    }
   }, [searchParams, onSearchParamsChange]);
 
   const handleOnSearchChange = debounce((search) => {

@@ -15,15 +15,40 @@ const StyleCocktailsListItem = styled.div`
 `;
 
 const CocktailesList = (props) => {
-  const { cocktails } = props;
+  const {
+    cocktails,
+    isFavoriteModeOn,
+    onFavoriteCocktailClick,
+    favoriteCocktails,
+  } = props;
+
+  const handleFavoriteCocktailClick = (id) => {
+    if (onFavoriteCocktailClick) {
+      onFavoriteCocktailClick(id);
+    }
+  };
 
   return (
     <StyledCocktailsList>
       {cocktails.map((cocktail) => (
         <StyleCocktailsListItem key={cocktail.id}>
-          <Link to={`/cocktails/${cocktail.id}`}>
-            <Cocktail cocktail={cocktail} />
-          </Link>
+          {!isFavoriteModeOn && (
+            <Link to={`/cocktails/${cocktail.id}`}>
+              <Cocktail
+                cocktail={cocktail}
+                isFavoriteModeOn={isFavoriteModeOn}
+              />
+            </Link>
+          )}
+          {isFavoriteModeOn && (
+            <div onClick={() => handleFavoriteCocktailClick(cocktail.id)}>
+              <Cocktail
+                cocktail={cocktail}
+                isFavoriteModeOn={isFavoriteModeOn}
+                isFavorite={favoriteCocktails.includes(cocktail.id)}
+              />
+            </div>
+          )}
         </StyleCocktailsListItem>
       ))}
     </StyledCocktailsList>

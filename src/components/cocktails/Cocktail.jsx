@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ReactComponent as AddToFavoriteIcon } from "../../images/add_to_favorite.svg";
 
 const StyledCocktailImageWrapper = styled.div`
   text-align: center;
@@ -31,17 +32,61 @@ const StyledCocktailNameEn = styled.div`
   text-align: center;
 `;
 
+const StyledCocktailFavoriteMode = styled.div`
+  position: relative;
+  cursor: pointer;
+`;
+
+const StyledCocktailDefault = styled.div``;
+
+const StyledCocktail = (props) =>
+  props.isFavoriteModeOn ? (
+    <StyledCocktailFavoriteMode>{props.children}</StyledCocktailFavoriteMode>
+  ) : (
+    <StyledCocktailDefault>{props.children}</StyledCocktailDefault>
+  );
+
+const StyledFavoriteModeWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+`;
+
+const StyledAddToFavoriteIcon = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  ${({ checked }) =>
+    checked &&
+    `
+    path {
+      fill: #4AA8FF;
+    }
+    `}
+`;
+
 const Cocktail = (props) => {
-  const { cocktail } = props;
+  const { cocktail, isFavoriteModeOn, isFavorite } = props;
 
   return (
-    <div>
+    <StyledCocktail isFavoriteModeOn={isFavoriteModeOn}>
+      {isFavoriteModeOn && (
+        <StyledFavoriteModeWrapper>
+          <StyledAddToFavoriteIcon checked={isFavorite}>
+            <AddToFavoriteIcon  />
+          </StyledAddToFavoriteIcon>
+        </StyledFavoriteModeWrapper>
+      )}
       <StyledCocktailImageWrapper>
         <StyledCocktailImage src={cocktail.imageRef} alt="" />
       </StyledCocktailImageWrapper>
       <StyledCocktailNameRu>{cocktail.nameRu}</StyledCocktailNameRu>
       <StyledCocktailNameEn>{cocktail.nameEn}</StyledCocktailNameEn>
-    </div>
+    </StyledCocktail>
   );
 };
 
