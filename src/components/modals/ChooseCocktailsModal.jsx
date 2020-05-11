@@ -24,7 +24,7 @@ const ChooseCocktailsModal = (props) => {
   } = props;
   const dispatch = useDispatch();
   const cocktails = useSelector((state) => state.cocktails.items);
-  const [checkedCocktails, setCheckedCocktails] = useState(new Set());
+  const [checkedCocktails, setCheckedCocktails] = useState([]);
 
   useEffect(() => {
     dispatch(fetchCocktails());
@@ -45,12 +45,15 @@ const ChooseCocktailsModal = (props) => {
     document.documentElement.style.overflow = "hidden";
   };
 
-  const handleFavoriteCocktailClick = (id) => {
-    const newCheckedCocktails = new Set(checkedCocktails);
-    if (checkedCocktails.has(id)) {
-      newCheckedCocktails.delete(id);
+  const handleFavoriteCocktailClick = (cocktail) => {
+    const newCheckedCocktails = [...checkedCocktails];
+    const cocktailIndex = newCheckedCocktails.findIndex(
+      (checkedCocktail) => checkedCocktail.id === cocktail.id
+    );
+    if (cocktailIndex > -1) {
+      newCheckedCocktails.splice(cocktailIndex, 1);
     } else {
-      newCheckedCocktails.add(id);
+      newCheckedCocktails.push(cocktail);
     }
     setCheckedCocktails(newCheckedCocktails);
   };

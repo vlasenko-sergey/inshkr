@@ -22,9 +22,9 @@ const CocktailesList = (props) => {
     favoriteCocktails,
   } = props;
 
-  const handleFavoriteCocktailClick = (id) => {
+  const handleFavoriteCocktailClick = (cocktail) => {
     if (onFavoriteCocktailClick) {
-      onFavoriteCocktailClick(id);
+      onFavoriteCocktailClick(cocktail);
     }
   };
 
@@ -41,11 +41,15 @@ const CocktailesList = (props) => {
             </Link>
           )}
           {isFavoriteModeOn && (
-            <div onClick={() => handleFavoriteCocktailClick(cocktail.id)}>
+            <div onClick={() => handleFavoriteCocktailClick(cocktail)}>
               <Cocktail
                 cocktail={cocktail}
                 isFavoriteModeOn={isFavoriteModeOn}
-                isFavorite={favoriteCocktails.includes(cocktail.id)}
+                isFavorite={
+                  favoriteCocktails.findIndex(
+                    (checkedCocktail) => checkedCocktail.id === cocktail.id
+                  ) > -1
+                }
               />
             </div>
           )}
