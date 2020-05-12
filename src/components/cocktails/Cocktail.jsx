@@ -82,7 +82,7 @@ const Cocktail = (props) => {
         </StyledFavoriteModeWrapper>
       )}
       <StyledCocktailImageWrapper>
-        <StyledCocktailImage src={cocktail.imageRef} alt="" />
+        <StyledCocktailImage src="https://ru.inshaker.com/uploads/cocktail/hires/495/1556469311-Connaught-Martini__highres.jpg" alt="" />
       </StyledCocktailImageWrapper>
       <StyledCocktailNameRu>{cocktail.nameRu}</StyledCocktailNameRu>
       <StyledCocktailNameEn>{cocktail.nameEn}</StyledCocktailNameEn>

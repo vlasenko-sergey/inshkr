@@ -30,6 +30,7 @@ const StyledInput = styled.input`
   outline: none;
   width: 100%;
   padding: 18px 9px;
+  text-align: center;
 `;
 
 const StyledTextArea = styled.textarea`
@@ -66,6 +67,8 @@ const StyledCocktailWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 30px;
+  flex-direction: column;
+  width: 25%;
 
   ${StyledInput} {
     width: 100px;
@@ -73,8 +76,13 @@ const StyledCocktailWrapper = styled.div`
   }
 
   > div {
-    width: 35%;
+    width: 100%;
   }
+`;
+
+const StyledCocktails = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const CreatePartyPage = () => {
@@ -210,7 +218,7 @@ const CreatePartyPage = () => {
             Выбрать коктейли
           </StyledButton>
         </div>
-        <div>
+        <StyledCocktails>
           {cocktails.map((cocktail) => (
             <StyledCocktailWrapper key={cocktail.id}>
               <Cocktail cocktail={cocktail} />
@@ -224,7 +232,7 @@ const CreatePartyPage = () => {
               />
             </StyledCocktailWrapper>
           ))}
-        </div>
+        </StyledCocktails>
         <div>
           <StyledButton onClick={handleSendButtonClick}>
             {!isPending && "Сохранить"}
