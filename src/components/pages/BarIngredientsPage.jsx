@@ -14,9 +14,9 @@ export const BarIngredientsPage = () => {
   const isPending = useSelector((state) => state.barIngredients.isPending);
 
   useEffect(() => {
-    //dispatch(fetchBarIngredients());
+    dispatch(fetchBarIngredients());
     return () => {
-     // dispatch(resetIngredients());
+     dispatch(resetIngredients());
     };
   }, [dispatch]);
 

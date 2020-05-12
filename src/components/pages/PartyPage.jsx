@@ -5,6 +5,7 @@ import { fetchParty, resetParty } from "../../features/parties/partySlice";
 import styled from "styled-components";
 import CocktailesList from "../cocktails/CocktailesList";
 import Loader from "../Loader";
+import { getCountLabel } from "../../utils/utils";
 
 const StyledPartyGuestsInfo = styled.div`
   display: flex;
@@ -104,13 +105,18 @@ const PartyPage = () => {
         <StyledPartyGuestsInfo>
           <StyledPartyGuestsInfoImage src="/guests.png" alt="" />
           <StyledPartyGuestsInfoText>
-            {party.guestsCount} гостей
+            {getCountLabel(party.guestsCount, "гость", "гостя", "гостей")}
           </StyledPartyGuestsInfoText>
         </StyledPartyGuestsInfo>
         <StyledPartyGuestsInfo>
           <StyledPartyGuestsInfoImage src="/glass.png" alt="" />
           <StyledPartyGuestsInfoText>
-            {party.cocktailAmount.length} гостей
+            {getCountLabel(
+              party.cocktailAmount.length,
+              "коктейль",
+              "коктейля",
+              "коктейлей"
+            )}
           </StyledPartyGuestsInfoText>
         </StyledPartyGuestsInfo>
       </StyledPartyInfo>

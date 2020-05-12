@@ -51,6 +51,9 @@ const StyledHeaderAccount = styled.div`
   background: #797979;
   position: absolute;
   right: 60px;
+  background-image: url("https://www.pngfind.com/pngs/m/622-6227673_man-svg-png-icon-free-download-font-awesome.png");
+  background-position: center center;
+  background-size: cover;
 `;
 
 const Header = () => {

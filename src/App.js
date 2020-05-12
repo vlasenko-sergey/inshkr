@@ -15,6 +15,7 @@ import BarCreateCocktailPage from "./components/pages/BarCreateCocktailPage";
 import PartiesPage from "./components/pages/PartiesPage";
 import CreatePartyPage from "./components/pages/CreatePartyPage";
 import PartyPage from "./components/pages/PartyPage";
+import FavoritePage from "./components/pages/FavoritePage";
 
 function App() {
   return (
@@ -36,6 +37,9 @@ function App() {
           </Route>
           <Route exact path="/ingredients/:id">
             <IngredientPage />
+          </Route>
+          <Route path="/favorite">
+            <FavoritePage />
           </Route>
           <Route path="/bar">
             <BarPage />

@@ -83,7 +83,7 @@ const StyledIngredientsWrapper = styled.div`
 `;
 
 const StyledIngredientImage = styled.img`
-  height: 62.5px;
+  height: 55.5px;
 
   :not(:first-child) {
     margin-top: 10px;
