@@ -14,8 +14,11 @@ export const createParty = createAsyncThunk("party/create", async (party) => {
 const initialState = { item: null, isPending: false };
 
 const partySlice = createSlice({
-  name: "parties",
+  name: "party",
   initialState: initialState,
+  reducers: {
+    resetParty: (state, action) => initialState,
+  },
   extraReducers: {
     [fetchParty.pending]: (state, action) => ({
       item: null,
@@ -34,5 +37,7 @@ const partySlice = createSlice({
     [createParty.rejected]: (state, action) => null,
   },
 });
+
+export const { resetParty } = partySlice.actions;
 
 export default partySlice.reducer;

@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchParty } from "../../features/parties/partySlice";
+import { fetchParty, resetParty } from "../../features/parties/partySlice";
 import styled from "styled-components";
 import CocktailesList from "../cocktails/CocktailesList";
+import Loader from "../Loader";
 
 const StyledPartyGuestsInfo = styled.div`
   display: flex;
@@ -62,13 +63,26 @@ const StyledMainInfoContent = styled.div`
 const PartyPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const party = useSelector((state) => (state.party ? state.party.item : null));
+  const party = useSelector((state) => state.party.item);
+  const isPending = useSelector((state) => state.party.isPending);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchParty(id));
     }
   }, [dispatch, id]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetParty());
+    };
+  }, [dispatch]);
+
+  console.log(isPending);
+
+  if (isPending) {
+    return <Loader />;
+  }
 
   if (!party) {
     return null;

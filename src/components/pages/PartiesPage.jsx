@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchParties } from "../../features/parties/partiesSlice";
+import {
+  fetchParties,
+  resetParties,
+} from "../../features/parties/partiesSlice";
 import styled from "styled-components";
+import Loader from "../Loader";
 
 const StyledCreatePartyLink = styled(Link)`
   color: #494949 !important;
@@ -45,6 +49,7 @@ const StyledPartyItemName = styled.div`
   line-height: 22px;
   text-align: center;
   margin-bottom: 20px;
+  font-weight: 600;
 `;
 
 const StyledPartyItemInfo = styled.div`
@@ -67,9 +72,14 @@ const StyledPartyItemInfoImage = styled.img`
 const PartiesPage = () => {
   const dispatch = useDispatch();
   const parties = useSelector((state) => state.parties.items);
+  const isPending = useSelector((state) => state.parties.isPending);
 
   useEffect(() => {
     dispatch(fetchParties());
+
+    return () => {
+      dispatch(resetParties());
+    };
   }, [dispatch]);
 
   return (
@@ -81,7 +91,8 @@ const PartiesPage = () => {
         </StyledCreatePartyLink>
       </StyledCreatePartyWrapper>
       <StyledPartyItems>
-        {parties &&
+        {!isPending &&
+          parties &&
           parties.map((party) => (
             <StyledPartyItem to={`/parties/${party.id}`}>
               <StyledPartyItemName>{party.name}</StyledPartyItemName>
@@ -97,6 +108,7 @@ const PartiesPage = () => {
               </StyledPartyItemInfo>
             </StyledPartyItem>
           ))}
+        {isPending && <Loader />}
       </StyledPartyItems>
     </div>
   );

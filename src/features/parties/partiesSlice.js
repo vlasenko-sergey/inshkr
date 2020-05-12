@@ -1,19 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import PartiesService from "../../services/partiesService";
 
-export const fetchParties = createAsyncThunk(
-  "parties/fetchAll",
-  async () => {
-    const parties = await PartiesService.getParties();
-    return parties;
-  }
-);
+export const fetchParties = createAsyncThunk("parties/fetchAll", async () => {
+  const parties = await PartiesService.getParties();
+  return parties;
+});
 
 const initialState = { items: [], isPending: false };
 
 const partiesSlice = createSlice({
   name: "parties",
   initialState: initialState,
+  reducers: {
+    resetParties: (state, action) => initialState,
+  },
   extraReducers: {
     [fetchParties.pending]: (state, action) => ({
       items: [],
@@ -29,5 +29,7 @@ const partiesSlice = createSlice({
     }),
   },
 });
+
+export const { resetParties } = partiesSlice.actions;
 
 export default partiesSlice.reducer;
