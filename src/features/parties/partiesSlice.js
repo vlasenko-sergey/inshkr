@@ -13,6 +13,16 @@ const partiesSlice = createSlice({
   initialState: initialState,
   reducers: {
     resetParties: (state, action) => initialState,
+    deletePartyFromList: (state, action) => {
+      const id = action.payload;
+      const index = state.items.findIndex(item => item.id === id);
+      if (index > -1) {
+        const items = state.items;
+        items.splice(index, 1);
+        state.items = [...items];
+      }
+      return state;
+    } 
   },
   extraReducers: {
     [fetchParties.pending]: (state, action) => ({
@@ -30,6 +40,6 @@ const partiesSlice = createSlice({
   },
 });
 
-export const { resetParties } = partiesSlice.actions;
+export const { resetParties, deletePartyFromList } = partiesSlice.actions;
 
 export default partiesSlice.reducer;

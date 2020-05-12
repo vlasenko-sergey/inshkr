@@ -1,10 +1,17 @@
-import React, { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { createParty } from "../../features/parties/partySlice";
+import React, { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createParty,
+  resetParty,
+  fetchParty,
+  updateParty,
+} from "../../features/parties/partySlice";
 import { useFormik } from "formik";
 import ChooseCocktailsModal from "../modals/ChooseCocktailsModal";
 import Cocktail from "../cocktails/Cocktail";
 import styled from "styled-components";
+import { useHistory, useParams } from "react-router-dom";
+import Loader from "../Loader";
 
 const StyledInputWrapper = styled.div`
   position: relative;
@@ -71,35 +78,70 @@ const StyledCocktailWrapper = styled.div`
 `;
 
 const CreatePartyPage = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const history = useHistory();
+  const [isChooseCocktailModalOpen, setIsChooseCocktailModalOpen] = useState(
+    false
+  );
+  const [cocktails, setCocktails] = useState([]);
+  const [cocktailsAmount, setCocktailsAmount] = useState({});
+  const isPending = useSelector((state) => state.party.isPending);
+  const isCreated = useSelector((state) => state.party.isCreated);
+  const party = useSelector((state) => state.party.item);
+
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: "",
-      legend: "",
-      guestsCount: 1,
+      name: party ? party.name : "",
+      legend: party ? party.legend : "",
+      guestsCount: party ? party.guestsCount : 1,
     },
     onSubmit: (values) => {
       const cocktailsAmountObject = cocktails.map((cocktail) => ({
         cocktail: { id: cocktail.id },
         amount: cocktailsAmount[cocktail.id] || 1,
       }));
-      dispatch(
-        createParty({
-          name: values.name,
-          guestsCount: values.guestsCount,
-          legend: values.legend,
-          members: [],
-          cocktailAmount: cocktailsAmountObject,
-        })
-      );
+      const value = {
+        name: values.name,
+        guestsCount: values.guestsCount,
+        legend: values.legend,
+        members: [],
+        cocktailAmount: cocktailsAmountObject,
+      };
+      if (id) {
+        value.id = id;
+      }
+      if (id) {
+        dispatch(updateParty(value));
+      } else {
+        dispatch(createParty(value));
+      }
     },
   });
 
-  const dispatch = useDispatch();
-  const [isChooseCocktailModalOpen, setIsChooseCocktailModalOpen] = useState(
-    false
-  );
-  const [cocktails, setCocktails] = useState([]);
-  const [cocktailsAmount, setCocktailsAmount] = useState({});
+  useEffect(() => {
+    if (id !== null && id !== undefined) {
+      dispatch(fetchParty(id));
+    }
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (party) {
+      setCocktails(party.cocktailAmount.map((item) => item.cocktail));
+      const amount = {};
+      party.cocktailAmount.forEach(item => {
+        amount[item.cocktail.id] = item.amount;
+      });
+      setCocktailsAmount(amount);
+    }
+  }, [party]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetParty());
+    };
+  }, [dispatch]);
 
   const handleSendButtonClick = () => {
     formik.handleSubmit();
@@ -116,6 +158,17 @@ const CreatePartyPage = () => {
   const handleAmountInputChange = (id, amount) => {
     setCocktailsAmount({ ...cocktailsAmount, [id]: amount });
   };
+
+  useEffect(() => {
+    if (isCreated) {
+      dispatch(resetParty());
+      history.replace("/parties");
+    }
+  }, [isCreated, dispatch, history]);
+
+  if (isPending && id) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -167,13 +220,16 @@ const CreatePartyPage = () => {
                 }
                 type="number"
                 step="1"
-                defaultValue={1}
+                defaultValue={cocktailsAmount[cocktail.id] || 1}
               />
             </StyledCocktailWrapper>
           ))}
         </div>
         <div>
-          <StyledButton onClick={handleSendButtonClick}>Сохранить</StyledButton>
+          <StyledButton onClick={handleSendButtonClick}>
+            {!isPending && "Сохранить"}
+            {isPending && "Loading"}
+          </StyledButton>
         </div>
       </div>
     </>

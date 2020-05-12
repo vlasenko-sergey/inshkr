@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchParties,
   resetParties,
+  deletePartyFromList,
 } from "../../features/parties/partiesSlice";
 import styled from "styled-components";
 import Loader from "../Loader";
+import { ReactComponent as EditIcon } from "../../images/edit.svg";
+import { ReactComponent as DeleteIcon } from "../../images/delete.svg";
+import { deleteParty } from "../../features/parties/partySlice";
 
 const StyledCreatePartyLink = styled(Link)`
   color: #494949 !important;
@@ -36,8 +40,9 @@ const StyledPartyItem = styled(Link)`
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
   border-radius: 5px;
-  padding: 20px;
+  padding: 20px 50px 20px 20px;
   width: 45%;
+  position: relative;
 
   :hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
@@ -69,10 +74,35 @@ const StyledPartyItemInfoImage = styled.img`
   margin-right: 15px;
 `;
 
+const StyledEditIconWrapper = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const StyledDeleteIconWrapper = styled.div`
+  position: absolute;
+
+  right: 10px;
+  bottom: 10px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
 const PartiesPage = () => {
   const dispatch = useDispatch();
   const parties = useSelector((state) => state.parties.items);
   const isPending = useSelector((state) => state.parties.isPending);
+  const deletedId = useSelector((state) => state.party.deletedId);
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(fetchParties());
@@ -81,6 +111,22 @@ const PartiesPage = () => {
       dispatch(resetParties());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (deletedId > -1) {
+      dispatch(deletePartyFromList(deletedId));
+    }
+  }, [deletedId, dispatch]);
+
+  const handleDeleteButtonClick = (id, e) => {
+    e.preventDefault();
+    dispatch(deleteParty(id));
+  };
+
+  const handleEditButtonClick = (id, e) => {
+    e.preventDefault();
+    history.push(`/parties/edit/${id}`);
+  };
 
   return (
     <div>
@@ -94,7 +140,17 @@ const PartiesPage = () => {
         {!isPending &&
           parties &&
           parties.map((party) => (
-            <StyledPartyItem to={`/parties/${party.id}`}>
+            <StyledPartyItem key={party.id} to={`/parties/${party.id}`}>
+              <StyledEditIconWrapper
+                onClick={(e) => handleEditButtonClick(party.id, e)}
+              >
+                <EditIcon />
+              </StyledEditIconWrapper>
+              <StyledDeleteIconWrapper
+                onClick={(e) => handleDeleteButtonClick(party.id, e)}
+              >
+                <DeleteIcon />
+              </StyledDeleteIconWrapper>
               <StyledPartyItemName>{party.name}</StyledPartyItemName>
               <StyledPartyItemInfo>
                 <StyledPartyItemInfoContent>

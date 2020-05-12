@@ -43,10 +43,8 @@ const ChooseCocktailsModal = (props) => {
   }, [dispatch, searchParams]);
 
   useEffect(() => {
-    if (onCheckedCocktailsChange) {
-      onCheckedCocktailsChange(checkedCocktails);
-    }
-  }, [checkedCocktails, onCheckedCocktailsChange]);
+    setCheckedCocktails(selectedCocktails);
+  }, [selectedCocktails]);
 
   const handleModalClose = () => {
     setIsOpen(false);
@@ -67,7 +65,9 @@ const ChooseCocktailsModal = (props) => {
     } else {
       newCheckedCocktails.push(cocktail);
     }
-    setCheckedCocktails(newCheckedCocktails);
+    if (onCheckedCocktailsChange) {
+      onCheckedCocktailsChange(newCheckedCocktails);
+    }
   };
 
   const handleSearchParamsChange = useCallback((searchParams) => {

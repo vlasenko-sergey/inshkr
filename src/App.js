@@ -52,6 +52,9 @@ function App() {
           <Route exact path="/parties/create">
             <CreatePartyPage />
           </Route>
+          <Route exact path="/parties/edit/:id">
+            <CreatePartyPage />
+          </Route>
           <Route exact path="/parties/:id">
             <PartyPage />
           </Route>

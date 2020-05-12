@@ -117,7 +117,7 @@ const PartyPage = () => {
             {party.ingredientAmount
               .filter((ingredientAmount) => ingredientAmount.amount)
               .map((ingredientAmount) => (
-                <StyledIngredientWrapper>
+                <StyledIngredientWrapper key={ingredientAmount.ingredient.id}>
                   <div>{ingredientAmount.ingredient.nameRu}</div>
                   <StyledIngredientDots />
                   <div>{ingredientAmount.amount}</div>
@@ -126,7 +126,7 @@ const PartyPage = () => {
             {party.ingredientAmount
               .filter((ingredientAmount) => !ingredientAmount.amount)
               .map((ingredientAmount) => (
-                <StyledIngredientWrapper>
+                <StyledIngredientWrapper  key={ingredientAmount.ingredient.id}>
                   <div>{ingredientAmount.ingredient.nameRu}</div>
                 </StyledIngredientWrapper>
               ))}
