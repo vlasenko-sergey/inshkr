@@ -153,72 +153,78 @@ export const CocktailPage = () => {
   if (!cocktail) {
     return null;
   }
-
+  console.log(cocktail);
   return (
-    <StyledCocktailPage>
-      <StyledAddToFavoriteIcon onClick={handleAddToFavoriteClick}>
-        <AddToFavoriteIcon />
-      </StyledAddToFavoriteIcon>
-      <h1>{cocktail.nameRu}</h1>
-      <h2>{cocktail.nameEn}</h2>
-      <StyledInfo>
-        <div>{cocktail.base.nameRu}</div>
-        <StyledInfoCircle />
-        <div>{cocktail.spirit}%</div>
-        <StyledInfoCircle />
-        <div>{cocktail.subgroup}</div>
-      </StyledInfo>
-      <StyledCocktailPageMain>
-        <StyledCocktailPageImageWrapper>
-          <StyledCocktailPageImage src={cocktail.imageRef} alt="" />
-        </StyledCocktailPageImageWrapper>
-        <StyledCocktailPageRecipe>
-          <StyledCocktailPageRecipeTitle>
-            На{" "}
-            <StyledCocktailPageRecipeTitleInput
-              type="text"
-              defaultValue="1"
-              onChange={handleServingsInputChange}
-            />{" "}
-            порцию мл:
-          </StyledCocktailPageRecipeTitle>
-          <StyledIngredients>
-            {cocktail.recipe
-              .filter((item) => item.amount)
-              .map((item) => (
-                <StyledIngredientWrapper>
-                  <div>{item.ingredient.nameRu}</div>
-                  <StyledIngredientDots />
-                  <div>{item.amount * servingsAmount}</div>
-                </StyledIngredientWrapper>
-              ))}
-            {cocktail.recipe
-              .filter((item) => !item.amount)
-              .map((item) => (
-                <StyledIngredientWrapper>
-                  <div>{item.ingredient.nameRu}</div>
-                </StyledIngredientWrapper>
-              ))}
-          </StyledIngredients>
-          <StyledCocktailPageRecipeTitle>
-            Способ смешивания:
-          </StyledCocktailPageRecipeTitle>
-          <StyledIngredients>
-            <div>{cocktail.mixingMethod}</div>
-          </StyledIngredients>
-          <StyledCocktailPageRecipeTitle>
-            Способ подачи:
-          </StyledCocktailPageRecipeTitle>
-          <StyledIngredients>
-            <div>{cocktail.glass.nameRu}</div>
-            <div>{cocktail.garnish && cocktail.garnish.nameRu}</div>
-          </StyledIngredients>
-        </StyledCocktailPageRecipe>
-      </StyledCocktailPageMain>
-      <div>
-        <StyledHistoryHeader>История</StyledHistoryHeader>
-        <StyledHistoryText>{cocktail.legend}</StyledHistoryText>
-      </div>
-    </StyledCocktailPage>
+    cocktail && (
+      <StyledCocktailPage>
+        <StyledAddToFavoriteIcon onClick={handleAddToFavoriteClick}>
+          <AddToFavoriteIcon />
+        </StyledAddToFavoriteIcon>
+        <h1>{cocktail.nameRu}</h1>
+        <h2>{cocktail.nameEn}</h2>
+        <StyledInfo>
+          {cocktail.base && (
+            <>
+              <div>{cocktail.base.nameRu}</div>
+              <StyledInfoCircle />
+            </>
+          )}
+          <div>{cocktail.spirit}%</div>
+          <StyledInfoCircle />
+          <div>{cocktail.subgroup}</div>
+        </StyledInfo>
+        <StyledCocktailPageMain>
+          <StyledCocktailPageImageWrapper>
+            <StyledCocktailPageImage src={cocktail.imageRef} alt="" />
+          </StyledCocktailPageImageWrapper>
+          <StyledCocktailPageRecipe>
+            <StyledCocktailPageRecipeTitle>
+              На{" "}
+              <StyledCocktailPageRecipeTitleInput
+                type="text"
+                defaultValue="1"
+                onChange={handleServingsInputChange}
+              />{" "}
+              порцию мл:
+            </StyledCocktailPageRecipeTitle>
+            <StyledIngredients>
+              {cocktail.recipe
+                .filter((item) => item.amount)
+                .map((item) => (
+                  <StyledIngredientWrapper key={item.id}>
+                    <div>{item.ingredient.nameRu}</div>
+                    <StyledIngredientDots />
+                    <div>{item.amount * servingsAmount}</div>
+                  </StyledIngredientWrapper>
+                ))}
+              {cocktail.recipe
+                .filter((item) => !item.amount)
+                .map((item) => (
+                  <StyledIngredientWrapper key={item.id}>
+                    <div>{item.ingredient.nameRu}</div>
+                  </StyledIngredientWrapper>
+                ))}
+            </StyledIngredients>
+            <StyledCocktailPageRecipeTitle>
+              Способ смешивания:
+            </StyledCocktailPageRecipeTitle>
+            <StyledIngredients>
+              <div>{cocktail.mixingMethod}</div>
+            </StyledIngredients>
+            <StyledCocktailPageRecipeTitle>
+              Способ подачи:
+            </StyledCocktailPageRecipeTitle>
+            <StyledIngredients>
+              <div>{cocktail.glass.nameRu}</div>
+              <div>{cocktail.garnish && cocktail.garnish.nameRu}</div>
+            </StyledIngredients>
+          </StyledCocktailPageRecipe>
+        </StyledCocktailPageMain>
+        <div>
+          <StyledHistoryHeader>История</StyledHistoryHeader>
+          <StyledHistoryText>{cocktail.legend}</StyledHistoryText>
+        </div>
+      </StyledCocktailPage>
+    )
   );
 };
