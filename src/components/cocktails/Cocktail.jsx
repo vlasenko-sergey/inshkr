@@ -7,6 +7,7 @@ const StyledCocktailImageWrapper = styled.div`
   height: 250px;
   overflow: hidden;
   position: relative;
+  width: 90%;
 `;
 
 const StyledCocktailImage = styled.img`
@@ -35,9 +36,12 @@ const StyledCocktailNameEn = styled.div`
 const StyledCocktailFavoriteMode = styled.div`
   position: relative;
   cursor: pointer;
+  height: 300px;
 `;
 
-const StyledCocktailDefault = styled.div``;
+const StyledCocktailDefault = styled.div`
+  height: 300px;
+`;
 
 const StyledCocktail = (props) =>
   props.isFavoriteModeOn ? (
@@ -69,6 +73,31 @@ const StyledAddToFavoriteIcon = styled.div`
     `}
 `;
 
+const StyledImagesWrapper = styled.div`
+  display: flex;
+`;
+
+const StyledIngredientsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledIngredientImage = styled.img`
+  height: 62.5px;
+
+  :not(:first-child) {
+    margin-top: 10px;
+  }
+`;
+
+const StyledLeftIngredients = styled.div`
+  font-size: 24px;
+  line-height: 29px;
+  border: 1px dashed #333333;
+  padding: 2px 4px;
+  margin-top: 10px;
+`;
+
 const Cocktail = (props) => {
   const { cocktail, isFavoriteModeOn, isFavorite } = props;
 
@@ -77,13 +106,37 @@ const Cocktail = (props) => {
       {isFavoriteModeOn && (
         <StyledFavoriteModeWrapper>
           <StyledAddToFavoriteIcon checked={isFavorite}>
-            <AddToFavoriteIcon  />
+            <AddToFavoriteIcon />
           </StyledAddToFavoriteIcon>
         </StyledFavoriteModeWrapper>
       )}
-      <StyledCocktailImageWrapper>
-        <StyledCocktailImage src="https://ru.inshaker.com/uploads/cocktail/hires/495/1556469311-Connaught-Martini__highres.jpg" alt="" />
-      </StyledCocktailImageWrapper>
+      <StyledImagesWrapper>
+        <StyledCocktailImageWrapper>
+          <StyledCocktailImage
+            src="https://ru.inshaker.com/uploads/cocktail/hires/495/1556469311-Connaught-Martini__highres.jpg"
+            alt=""
+          />
+        </StyledCocktailImageWrapper>
+        {cocktail.recipe && <StyledIngredientsWrapper>
+          {cocktail.recipe.slice(0, 3).map((ingredient) => (
+            <StyledIngredientImage
+              src="https://ru.inshaker.com/uploads/good/image_common/62/1587386612-WOODFORD_STRAIGHT_BOURBON_WHISKEY_460%D1%85865.jpg"
+              alt=""
+            />
+          ))}
+          {cocktail.recipe.length === 4 && (
+            <StyledIngredientImage
+              src="https://ru.inshaker.com/uploads/good/image_common/62/1587386612-WOODFORD_STRAIGHT_BOURBON_WHISKEY_460%D1%85865.jpg"
+              alt=""
+            />
+          )}
+          {cocktail.recipe.length > 4 && (
+            <StyledLeftIngredients>
+              +{cocktail.recipe.length - 3}
+            </StyledLeftIngredients>
+          )}
+        </StyledIngredientsWrapper>}
+      </StyledImagesWrapper>
       <StyledCocktailNameRu>{cocktail.nameRu}</StyledCocktailNameRu>
       <StyledCocktailNameEn>{cocktail.nameEn}</StyledCocktailNameEn>
     </StyledCocktail>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchParty, resetParty } from "../../features/parties/partySlice";
@@ -65,6 +65,7 @@ const PartyPage = () => {
   const dispatch = useDispatch();
   const party = useSelector((state) => state.party.item);
   const isPending = useSelector((state) => state.party.isPending);
+  const [cocktailsAmount, setCocktailsAmount] = useState({});
 
   useEffect(() => {
     if (id) {
@@ -78,7 +79,15 @@ const PartyPage = () => {
     };
   }, [dispatch]);
 
-  console.log(isPending);
+  useEffect(() => {
+    if (party) {
+      const amounts = {};
+      party.cocktailAmount.forEach((item) => {
+        amounts[item.cocktail.id] = item.amount;
+      });
+      setCocktailsAmount(amounts);
+    }
+  }, [party]);
 
   if (isPending) {
     return <Loader />;
@@ -108,6 +117,7 @@ const PartyPage = () => {
       <div>
         <CocktailesList
           cocktails={party.cocktailAmount.map((item) => item.cocktail)}
+          cocktailsAmount={cocktailsAmount}
         />
       </div>
       <StyledMainInfo>
@@ -126,7 +136,7 @@ const PartyPage = () => {
             {party.ingredientAmount
               .filter((ingredientAmount) => !ingredientAmount.amount)
               .map((ingredientAmount) => (
-                <StyledIngredientWrapper  key={ingredientAmount.ingredient.id}>
+                <StyledIngredientWrapper key={ingredientAmount.ingredient.id}>
                   <div>{ingredientAmount.ingredient.nameRu}</div>
                 </StyledIngredientWrapper>
               ))}
