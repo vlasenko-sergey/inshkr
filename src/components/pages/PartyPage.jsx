@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchParty } from "../../features/parties/partySlice";
 import styled from "styled-components";
+import CocktailesList from "../cocktails/CocktailesList";
 
 const StyledPartyGuestsInfo = styled.div`
   display: flex;
@@ -91,23 +92,30 @@ const PartyPage = () => {
         </StyledPartyGuestsInfo>
       </StyledPartyInfo>
       <div>
-        {party.cocktailAmount.map((cocktailAmount) => (
-          <div>
-            <div>{cocktailAmount.amount}</div>
-          </div>
-        ))}
+        <CocktailesList
+          cocktails={party.cocktailAmount.map((item) => item.cocktail)}
+        />
       </div>
       <StyledMainInfo>
         <StyledMainInfoIngredients>
           <StyledH2>Вам понадобится:</StyledH2>
           <StyledMainInfoContent>
-            {party.ingredientAmount.map((ingredientAmount) => (
-              <StyledIngredientWrapper>
-                <div>{ingredientAmount.ingredient.nameRu}</div>
-                <StyledIngredientDots />
-                <div>{ingredientAmount.amount}</div>
-              </StyledIngredientWrapper>
-            ))}
+            {party.ingredientAmount
+              .filter((ingredientAmount) => ingredientAmount.amount)
+              .map((ingredientAmount) => (
+                <StyledIngredientWrapper>
+                  <div>{ingredientAmount.ingredient.nameRu}</div>
+                  <StyledIngredientDots />
+                  <div>{ingredientAmount.amount}</div>
+                </StyledIngredientWrapper>
+              ))}
+            {party.ingredientAmount
+              .filter((ingredientAmount) => !ingredientAmount.amount)
+              .map((ingredientAmount) => (
+                <StyledIngredientWrapper>
+                  <div>{ingredientAmount.ingredient.nameRu}</div>
+                </StyledIngredientWrapper>
+              ))}
           </StyledMainInfoContent>
         </StyledMainInfoIngredients>
         <div>

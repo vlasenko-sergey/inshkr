@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Modal from "react-modal";
 import CocktailesList from "../cocktails/CocktailesList";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCocktails } from "../../features/cocktails/cocktailsSlice";
+import {
+  fetchCocktails,
+  resetCocktails,
+} from "../../features/cocktails/cocktailsSlice";
 import CocktailsSearch from "../cocktails/CoctailsSearch";
+import Loader from "../Loader";
 
 const chooseCocktailsModalStyles = {
   content: {
@@ -24,11 +28,19 @@ const ChooseCocktailsModal = (props) => {
   } = props;
   const dispatch = useDispatch();
   const cocktails = useSelector((state) => state.cocktails.items);
+  const isPending = useSelector((state) => state.cocktails.isPending);
   const [checkedCocktails, setCheckedCocktails] = useState([]);
+  const [searchParams, setSearchParams] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchCocktails());
-  }, [dispatch]);
+    if (searchParams) {
+      dispatch(fetchCocktails(searchParams));
+    }
+
+    return () => {
+      dispatch(resetCocktails());
+    };
+  }, [dispatch, searchParams]);
 
   useEffect(() => {
     if (onCheckedCocktailsChange) {
@@ -58,6 +70,10 @@ const ChooseCocktailsModal = (props) => {
     setCheckedCocktails(newCheckedCocktails);
   };
 
+  const handleSearchParamsChange = useCallback((searchParams) => {
+    setSearchParams(searchParams);
+  }, []);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -65,13 +81,16 @@ const ChooseCocktailsModal = (props) => {
       onRequestClose={handleModalClose}
       onAfterOpen={handleModalOpen}
     >
-      <CocktailsSearch />
-      <CocktailesList
-        cocktails={cocktails}
-        isFavoriteModeOn
-        onFavoriteCocktailClick={handleFavoriteCocktailClick}
-        favoriteCocktails={selectedCocktails}
-      />
+      <CocktailsSearch onSearchParamsChange={handleSearchParamsChange} />
+      {isPending && <Loader />}
+      {!isPending && (
+        <CocktailesList
+          cocktails={cocktails}
+          isFavoriteModeOn
+          onFavoriteCocktailClick={handleFavoriteCocktailClick}
+          favoriteCocktails={selectedCocktails}
+        />
+      )}
     </Modal>
   );
 };

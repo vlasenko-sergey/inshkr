@@ -4,6 +4,71 @@ import { createParty } from "../../features/parties/partySlice";
 import { useFormik } from "formik";
 import ChooseCocktailsModal from "../modals/ChooseCocktailsModal";
 import Cocktail from "../cocktails/Cocktail";
+import styled from "styled-components";
+
+const StyledInputWrapper = styled.div`
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 50%;
+`;
+
+const StyledInput = styled.input`
+  height: 40px;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 2px solid #9c9c9c;
+  outline: none;
+  width: 100%;
+  padding: 18px 9px;
+`;
+
+const StyledTextArea = styled.textarea`
+  border: 2px solid #9c9c9c;
+  width: 100%;
+  height: 115px;
+  resize: none;
+  outline: none;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 0.2em;
+  font-family: Montserrat;
+`;
+
+const StyledButton = styled.button`
+  display: inline-block;
+  min-width: 150px;
+  margin: 20px auto;
+  background: #8bc34a;
+  color: #fefefe;
+  font-size: 1.2em;
+  padding: 1em;
+  border-radius: 4px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  transition: border-radius linear 0.05s, width linear 0.05s;
+`;
+
+const StyledCocktailWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+
+  ${StyledInput} {
+    width: 100px;
+    margin-left: 30px;
+  }
+
+  > div {
+    width: 35%;
+  }
+`;
 
 const CreatePartyPage = () => {
   const formik = useFormik({
@@ -61,30 +126,42 @@ const CreatePartyPage = () => {
         selectedCocktails={cocktails}
       />
       <div>
-        <input
-          name="name"
-          onChange={formik.handleChange}
-          type="text"
-          value={formik.values.name}
-        />
-        <input
-          name="guestsCount"
-          onChange={formik.handleChange}
-          type="text"
-          value={formik.values.guestsCount}
-        />
-        <textarea
-          name="legend"
-          value={formik.values.legend}
-          onChange={formik.handleChange}
-        ></textarea>
-        <button onClick={handleSendButtonClick}>Send</button>
-        <button onClick={handleChooseCocktailsButton}>Add cocktail</button>
+        <StyledInputWrapper>
+          <StyledInput
+            name="name"
+            onChange={formik.handleChange}
+            type="text"
+            value={formik.values.name}
+            placeholder="Название"
+          />
+        </StyledInputWrapper>
+        <StyledInputWrapper>
+          <StyledInput
+            name="guestsCount"
+            onChange={formik.handleChange}
+            type="number"
+            value={formik.values.guestsCount}
+            placeholder="Количество гостей"
+          />
+        </StyledInputWrapper>
+        <StyledInputWrapper>
+          <StyledTextArea
+            name="legend"
+            value={formik.values.legend}
+            onChange={formik.handleChange}
+            placeholder="Описание"
+          />
+        </StyledInputWrapper>
+        <div>
+          <StyledButton onClick={handleChooseCocktailsButton}>
+            Выбрать коктейли
+          </StyledButton>
+        </div>
         <div>
           {cocktails.map((cocktail) => (
-            <div key={cocktail.id}>
+            <StyledCocktailWrapper key={cocktail.id}>
               <Cocktail cocktail={cocktail} />
-              <input
+              <StyledInput
                 onChange={(e) =>
                   handleAmountInputChange(cocktail.id, e.target.value)
                 }
@@ -92,8 +169,11 @@ const CreatePartyPage = () => {
                 step="1"
                 defaultValue={1}
               />
-            </div>
+            </StyledCocktailWrapper>
           ))}
+        </div>
+        <div>
+          <StyledButton onClick={handleSendButtonClick}>Сохранить</StyledButton>
         </div>
       </div>
     </>
