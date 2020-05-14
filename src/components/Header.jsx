@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import AuthModal from "./modals/AuthModal";
 
 const StyledHeader = styled.div`
   height: 60px;
@@ -50,21 +51,32 @@ const StyledHeaderAccount = styled.div`
   background: #797979;
   position: absolute;
   right: 60px;
+  background-image: url("https://cdn4.iconfinder.com/data/icons/esophageal-esophagus-throat-cancer/255/esophageal-cancer-007-512.png");
+  background-position: -5px 4px;
+  background-size: cover;
 `;
 
 const Header = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
   return (
-    <StyledHeader>
-      <StyledHeaderContent>
-        <StyledHeaderTitle>InShKR</StyledHeaderTitle>
-        <StyledHeaderMenu>
-          <Link to="/cocktails">Коктейли</Link>
-          <StyledHeaderMenuDivider />
-          <Link to="/ingredients">Ингредиенты</Link>
-        </StyledHeaderMenu>
-        <StyledHeaderAccount />
-      </StyledHeaderContent>
-    </StyledHeader>
+    <>
+      <AuthModal isOpen={isAuthModalOpen} setIsOpen={setIsAuthModalOpen} />
+      <StyledHeader>
+        <StyledHeaderContent>
+          <StyledHeaderTitle>
+            <Link to="/">InShKR</Link>
+          </StyledHeaderTitle>
+          <StyledHeaderMenu>
+            <Link to="/cocktails">Коктейли</Link>
+            <StyledHeaderMenuDivider />
+            <Link to="/ingredients">Ингредиенты</Link>
+          </StyledHeaderMenu>
+          <StyledHeaderAccount />
+          {/* <div onClick={handleAuthButtonClick}>Войти</div> */}
+        </StyledHeaderContent>
+      </StyledHeader>
+    </>
   );
 };
 

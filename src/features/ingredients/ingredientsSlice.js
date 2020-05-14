@@ -3,8 +3,8 @@ import IngredientsService from "../../services/ingredientsService";
 
 export const fetchIngredients = createAsyncThunk(
   "ingredients/fetchAll",
-  async (searchParams) => {
-    const ingredients = await IngredientsService.getIngredients(searchParams);
+  async () => {
+    const ingredients = await IngredientsService.getItems();
     return ingredients;
   }
 );

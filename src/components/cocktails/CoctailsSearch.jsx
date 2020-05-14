@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import FilterGroup from "../FilterGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCocktailsBases } from "../../features/cocktails/cocktailsBasesSlice";
-import { fetchCocktailsSpirits } from "../../features/cocktails/cocktailsSpiritsSlice";
-import { fetchCocktailsGroups } from "../../features/cocktails/cocktailsGroupsSlice";
-import { fetchCocktailsTastes } from "../../features/cocktails/cocktailsTastesSlice";
 import SearchInput from "../SearchInput";
 import debounce from "lodash.debounce";
 import styled from "styled-components";
+import { fetchCocktailsProperties } from "../../features/cocktails/cocktailsPropertiesSlice";
 
 const StyledFilterWrapper = styled.div`
   margin-top: 20px;
@@ -18,26 +15,27 @@ const StyledFilterWrapper = styled.div`
 const CocktailsSearch = (props) => {
   const { onSearchParamsChange } = props;
   const dispatch = useDispatch();
-  const bases = useSelector((state) => state.cocktailsBases);
-  const spirits = useSelector((state) => state.cocktailsSpirits);
-  const groups = useSelector((state) => state.cocktailsGroups);
-  const tastes = useSelector((state) => state.cocktailsTastes);
+  const bases = useSelector((state) => state.cocktailsProperties.items.bases);
+  const spirits = useSelector(
+    (state) => state.cocktailsProperties.items.spirits
+  );
+  const groups = useSelector((state) => state.cocktailsProperties.items.groups);
+  const tastes = useSelector((state) => state.cocktailsProperties.items.tastes);
 
-  const [searchParams, setSearchParams] = useState({});
+  const [searchParams, setSearchParams] = useState({tastes: []});
 
   useEffect(() => {
-    dispatch(fetchCocktailsBases());
-    dispatch(fetchCocktailsSpirits());
-    dispatch(fetchCocktailsGroups());
-    dispatch(fetchCocktailsTastes());
+    dispatch(fetchCocktailsProperties());
   }, [dispatch]);
 
   useEffect(() => {
-    onSearchParamsChange(searchParams);
+    if (onSearchParamsChange) {
+      onSearchParamsChange(searchParams);
+    }
   }, [searchParams, onSearchParamsChange]);
 
-  const handleOnSearchChange = debounce((search) => {
-    setSearchParams({ ...searchParams, search });
+  const handleOnSearchChange = debounce((keyword) => {
+    setSearchParams({ ...searchParams, keyword });
   }, 500);
 
   const handleOnFilterChange = (filterName, filterValue) => {
@@ -77,9 +75,10 @@ const CocktailsSearch = (props) => {
       <StyledFilterWrapper>
         <FilterGroup
           filters={tastes}
-          value={searchParams.taste}
+          value={searchParams.tastes}
+          multiple
           onFilterChange={(value) => {
-            handleOnFilterChange("taste", value);
+            handleOnFilterChange("tastes", value);
           }}
         />
       </StyledFilterWrapper>
