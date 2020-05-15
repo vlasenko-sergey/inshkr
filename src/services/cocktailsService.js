@@ -5,6 +5,7 @@ const routes = {
   searchCocktails: () => "/cocktails/search",
   getCocktailById: (id) => `/cocktails/${id}`,
   getCocktailsProperties: () => "/cocktails/properties",
+  
 };
 
 export default class CocktailsService {

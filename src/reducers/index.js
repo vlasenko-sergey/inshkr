@@ -11,6 +11,8 @@ import ingredientsProperties from "../features/ingredients/ingredientsProperties
 import cocktailsProperties from "../features/cocktails/cocktailsPropertiesSlice";
 import searchIngredients from "../features/ingredients/searchIngredientsSlice";
 import barCocktails from "../features/bar/barCocktailsSlice";
+import customCocktails from "../features/cocktails/customCocktailsSlice";
+import customCocktail from "../features/cocktails/customCocktailSlice";
 
 const rootReducer = combineReducers({
   cocktails,
@@ -25,6 +27,8 @@ const rootReducer = combineReducers({
   cocktailsProperties,
   searchIngredients,
   barCocktails,
+  customCocktails,
+  customCocktail,
 });
 
 export default rootReducer;

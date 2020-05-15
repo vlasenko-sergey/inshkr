@@ -4,11 +4,19 @@ import {
   fetchCocktailById,
   resetCocktail,
 } from "../../features/cocktails/cocktailSlice";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Loader from "../Loader";
 import { ReactComponent as AddToFavoriteIcon } from "../../images/add_to_favorite.svg";
-import { addToFavorites, deleteFromFavorites } from "../../features/favorites/favoritesSlice";
+import {
+  addToFavorites,
+  deleteFromFavorites,
+} from "../../features/favorites/favoritesSlice";
+import {
+  fetchCustomCocktailById,
+  resetCustomCocktail,
+} from "../../features/cocktails/customCocktailSlice";
+import { deleteCustomCocktail } from "../../features/cocktails/customCocktailsSlice";
 
 const StyledCocktailPageMain = styled.div`
   display: flex;
@@ -126,10 +134,20 @@ const StyledCocktailPage = styled.div`
   position: relative;
 `;
 
-export const CocktailPage = () => {
+export const CocktailPage = (props) => {
+  const { customCocktail } = props;
   const dispatch = useDispatch();
-  const cocktail = useSelector((state) => state.cocktail.item);
-  const isPending = useSelector((state) => state.cocktail.isPending);
+  const history = useHistory();
+  const cocktail = useSelector((state) =>
+    customCocktail ? state.customCocktail.item : state.cocktail.item
+  );
+  const isPending = useSelector((state) =>
+    customCocktail ? state.customCocktail.isPending : state.cocktail.isPending
+  );
+  const isDeletePending = useSelector(
+    (state) => state.customCocktails.isPending
+  );
+  const isDeleted = useSelector((state) => state.customCocktails.isDeleted);
   const [isFavorite, setIsFavorite] = useState(false);
   const { id } = useParams();
   const [servingsAmount, setServingsAmount] = useState(1);
@@ -141,12 +159,20 @@ export const CocktailPage = () => {
   }, [cocktail]);
 
   useEffect(() => {
-    dispatch(fetchCocktailById(id));
+    if (customCocktail) {
+      dispatch(fetchCustomCocktailById(id));
+    } else {
+      dispatch(fetchCocktailById(id));
+    }
 
     return () => {
-      dispatch(resetCocktail());
+      if (customCocktail) {
+        dispatch(resetCustomCocktail());
+      } else {
+        dispatch(resetCocktail());
+      }
     };
-  }, [dispatch, id]);
+  }, [dispatch, id, customCocktail]);
 
   const handleServingsInputChange = (event) => {
     const newValue = Number(event.target.value);
@@ -164,7 +190,21 @@ export const CocktailPage = () => {
     setIsFavorite(!isFavorite);
   };
 
-  if (isPending) {
+  const handleEditButtonClick = () => {
+    history.push(history.location.pathname + "/edit");
+  };
+
+  const handleDeleteButtonClick = () => {
+    dispatch(deleteCustomCocktail(cocktail));
+  };
+
+  useEffect(() => {
+    if (isDeleted) {
+      history.push("/my-recipes");
+    }
+  }, [isDeleted, history]);
+
+  if (isPending || isDeletePending) {
     return <Loader />;
   }
 
@@ -175,13 +215,21 @@ export const CocktailPage = () => {
   return (
     cocktail && (
       <StyledCocktailPage>
-        <StyledAddToFavoriteIcon
-          onClick={handleAddToFavoriteClick}
-          active={isFavorite}
-        >
-          <AddToFavoriteIcon />
-        </StyledAddToFavoriteIcon>
+        {!customCocktail && (
+          <StyledAddToFavoriteIcon
+            onClick={handleAddToFavoriteClick}
+            active={isFavorite}
+          >
+            <AddToFavoriteIcon />
+          </StyledAddToFavoriteIcon>
+        )}
         <h1>{cocktail.nameRu}</h1>
+        {customCocktail && (
+          <>
+            <button onClick={handleEditButtonClick}>edit</button>
+            <button onClick={handleDeleteButtonClick}>delete</button>
+          </>
+        )}
         <h2>{cocktail.nameEn}</h2>
         <StyledInfo>
           {cocktail.base && (
@@ -191,8 +239,12 @@ export const CocktailPage = () => {
             </>
           )}
           <div>{cocktail.spirit}%</div>
-          <StyledInfoCircle />
-          <div>{cocktail.cocktailSubgroup.name}</div>
+          {cocktail.cocktailSubgroup && (
+            <>
+              <StyledInfoCircle />
+              <div>{cocktail.cocktailSubgroup.name}</div>
+            </>
+          )}
         </StyledInfo>
         <StyledCocktailPageMain>
           <StyledCocktailPageImageWrapper>
@@ -229,14 +281,16 @@ export const CocktailPage = () => {
             <StyledCocktailPageRecipeTitle>
               Способ смешивания:
             </StyledCocktailPageRecipeTitle>
-            <StyledIngredients>
-              <div>{cocktail.mixingMethod.name}</div>
-            </StyledIngredients>
+            {cocktail.mixingMethod && (
+              <StyledIngredients>
+                <div>{cocktail.mixingMethod.name}</div>
+              </StyledIngredients>
+            )}
             <StyledCocktailPageRecipeTitle>
               Способ подачи:
             </StyledCocktailPageRecipeTitle>
             <StyledIngredients>
-              <div>{cocktail.glass.nameRu}</div>
+              {cocktail.glass && <div>{cocktail.glass.nameRu}</div>}
               <div>{cocktail.garnish && cocktail.garnish.nameRu}</div>
             </StyledIngredients>
           </StyledCocktailPageRecipe>

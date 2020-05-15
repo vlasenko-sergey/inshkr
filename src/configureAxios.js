@@ -4,7 +4,7 @@ import qs from "qs";
 const configureAxios = () => {
   axios.interceptors.response.use(
     (response) =>
-      new Promise((resolve) => setTimeout(() => resolve(response.data), 600)),
+      new Promise((resolve) => setTimeout(() => resolve(response.data), 500)),
     (error) => {
       return Promise.reject(error.response.data);
     }

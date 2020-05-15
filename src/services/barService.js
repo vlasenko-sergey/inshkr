@@ -2,8 +2,8 @@ import axios from "axios";
 
 const routes = {
   getIngredients: () => "/bar/ingredients",
-  addToBar: (id) => `/item/${id}/add-to-bar`,
-  deleteFromBar: (id) => `/item/${id}/remove-from-bar`,
+  addToBar: (id) => `/items/${id}/add-to-bar`,
+  deleteFromBar: (id) => `/items/${id}/remove-from-bar`,
   getCocktails: () => `/bar/cocktails`,
 };
 

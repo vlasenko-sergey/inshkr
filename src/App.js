@@ -32,6 +32,9 @@ function App() {
           <Route exact path="/cocktails/:id">
             <CocktailPage />
           </Route>
+          <Route exact path="/custom-cocktails/:id">
+            <CocktailPage customCocktail />
+          </Route>
           <Route exact path="/ingredients" component={IngredientsPage} />
           <Route exact path="/ingredients/:id">
             <IngredientPage />
@@ -46,6 +49,9 @@ function App() {
             <BarMyRecipesPage />
           </Route>
           <Route exact path="/my-recipes/create">
+            <BarCreateCocktailPage />
+          </Route>
+          <Route exact path="/custom-cocktails/:id/edit">
             <BarCreateCocktailPage />
           </Route>
           <Route exact path="/parties">
