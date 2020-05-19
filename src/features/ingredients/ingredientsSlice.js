@@ -9,7 +9,33 @@ export const fetchIngredients = createAsyncThunk(
   }
 );
 
-const initialState = { pending: false, items: [] };
+export const createIngredient = createAsyncThunk(
+  "ingredients/create",
+  async (ingredient) => {
+    await IngredientsService.createIngredient(ingredient);
+  }
+);
+
+export const updateIngredient = createAsyncThunk(
+  "ingredients/update",
+  async (ingredient) => {
+    await IngredientsService.updateIngredient(ingredient);
+  }
+);
+
+export const deleteIngredient = createAsyncThunk(
+  "ingredients/delete",
+  async (id) => {
+    await IngredientsService.deleteIngredient(id);
+  }
+);
+
+const initialState = {
+  isPending: false,
+  items: null,
+  isCreated: false,
+  isDeleted: false,
+};
 
 const ingredientsSlice = createSlice({
   name: "ingredients",
@@ -19,7 +45,7 @@ const ingredientsSlice = createSlice({
   },
   extraReducers: {
     [fetchIngredients.pending]: (state, action) => ({
-      items: [],
+      items: null,
       isPending: true,
     }),
     [fetchIngredients.fulfilled]: (state, action) => ({
@@ -29,6 +55,33 @@ const ingredientsSlice = createSlice({
     [fetchIngredients.rejected]: (state, action) => ({
       ...state,
       isPending: false,
+    }),
+    [createIngredient.pending]: (state, action) => ({
+      isCreated: true,
+    }),
+    [createIngredient.fulfilled]: (state, action) => ({
+      isCreated: false,
+    }),
+    [createIngredient.rejected]: (state, action) => ({
+      isCreated: false,
+    }),
+    [updateIngredient.pending]: (state, action) => ({
+      isCreated: true,
+    }),
+    [updateIngredient.fulfilled]: (state, action) => ({
+      isCreated: false,
+    }),
+    [updateIngredient.rejected]: (state, action) => ({
+      isCreated: false,
+    }),
+    [deleteIngredient.pending]: (state, action) => ({
+      isDeleted: true,
+    }),
+    [deleteIngredient.fulfilled]: (state, action) => ({
+      isDeleted: false,
+    }),
+    [deleteIngredient.rejected]: (state, action) => ({
+      isDeleted: false,
     }),
   },
 });

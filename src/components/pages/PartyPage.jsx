@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchParty, resetParty } from "../../features/parties/partySlice";
 import styled from "styled-components";
@@ -64,10 +64,11 @@ const StyledMainInfoContent = styled.div`
 const StyledTableware = styled.div`
   display: flex;
   margin-bottom: 40px;
+  padding-left: 30px;
 
   img {
-    width: 40px;
     margin-right: 15px;
+    max-height: 60px;
   }
 `;
 
@@ -162,7 +163,13 @@ const PartyPage = () => {
           <StyledH2>Посуда и инвентарь:</StyledH2>
           <StyledTableware>
             {party.tableware.map((tableware) => (
-              <img key={`tableware${tableware.id}`} src={tableware.iconImageRef} alt="" />
+              <Link to={`/tableware/${tableware.id}`}>
+                <img
+                  key={`tableware${tableware.id}`}
+                  src={tableware.iconImageRef}
+                  alt=""
+                />
+              </Link>
             ))}
           </StyledTableware>
           <StyledH2>Описание:</StyledH2>

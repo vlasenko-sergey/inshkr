@@ -68,6 +68,19 @@ const IngredientsList = (props) => {
     history.push("/ingredients?addToBarMode=true");
   };
 
+  const getLinkByType = (type) => {
+    switch (type) {
+      case "Tableware":
+        return "tableware";
+      case "Ingredient":
+        return "ingredient";
+      case "Garnish":
+        return "garnish";
+      default:
+        return "";
+    }
+  };
+
   return (
     <StyledIngredientsListWrapper>
       <StyledIngredientsList>
@@ -79,21 +92,22 @@ const IngredientsList = (props) => {
             <StyledAddFavoriteButtonText>Новый</StyledAddFavoriteButtonText>
           </StyledAddFavoriteButton>
         )}
-        {ingredients && ingredients.map((ingredient) => (
-          <StyleIngredientsListItem key={`ingredient${ingredient.id}`}>
-            <Link to={`/ingredients/${ingredient.id}`}>
-              <Ingredient
-                ingredient={ingredient}
-                isFavoriteModeOn={isFavoriteModeOn}
-                isChecked={
-                  barIngredients.findIndex(
-                    (item) => item.id === ingredient.id
-                  ) > -1
-                }
-              />
-            </Link>
-          </StyleIngredientsListItem>
-        ))}
+        {ingredients &&
+          ingredients.map((ingredient) => (
+            <StyleIngredientsListItem key={`ingredient${ingredient.id}`}>
+              <Link to={`/${getLinkByType(ingredient.dtype)}/${ingredient.id}`}>
+                <Ingredient
+                  ingredient={ingredient}
+                  isFavoriteModeOn={isFavoriteModeOn}
+                  isChecked={
+                    barIngredients.findIndex(
+                      (item) => item.id === ingredient.id
+                    ) > -1
+                  }
+                />
+              </Link>
+            </StyleIngredientsListItem>
+          ))}
       </StyledIngredientsList>
     </StyledIngredientsListWrapper>
   );

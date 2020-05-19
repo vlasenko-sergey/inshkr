@@ -16,7 +16,18 @@ const StyledIngredientImageWrapper = styled.div`
 `;
 
 const StyledIngredientImage = styled.img`
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all ease-in-out 0.3s;
+`;
+
+const StyledCocktailImage = styled.img`
+  max-height: 100%;
+  max-width: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -42,7 +53,12 @@ const StyledIngredientFavoriteMode = styled.div`
   position: relative;
 `;
 
-const StyledIngredientDefault = styled.div``;
+const StyledIngredientDefault = styled.div`
+  :hover ${StyledIngredientImage} {
+    transform: translate(-50%, -50%) scale(1.5);
+    filter: saturate(2);
+  }
+`;
 
 const StyledIngredient = (props) =>
   props.isFavoriteModeOn ? (
@@ -99,9 +115,18 @@ const StyledCocktailImageWrapper = styled.div`
 const StyledLeftCocktails = styled.div`
   font-size: 24px;
   line-height: 29px;
-  border: 1px dashed #333333;
   padding: 2px 4px;
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+`;
+
+const StyledLeftCocktailsCircle = styled.div`
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: solid 1px #616161;
+  margin-right: 2px;
 `;
 
 const Ingredient = (props) => {
@@ -141,12 +166,14 @@ const Ingredient = (props) => {
           <StyledCocktailsWrapper>
             {ingredient.cocktails.slice(0, 3).map((ingredient) => (
               <StyledCocktailImageWrapper key={ingredient.id}>
-                <StyledIngredientImage src={ingredient.imageRef} alt="" />
+                <StyledCocktailImage src={ingredient.imageRef} alt="" />
               </StyledCocktailImageWrapper>
             ))}
             {ingredient.cocktails.length > 3 && (
               <StyledLeftCocktails>
-                +{ingredient.cocktails.length - 3}
+                <StyledLeftCocktailsCircle />
+                <StyledLeftCocktailsCircle />
+                <StyledLeftCocktailsCircle />
               </StyledLeftCocktails>
             )}
           </StyledCocktailsWrapper>

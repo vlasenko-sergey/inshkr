@@ -10,7 +10,10 @@ import { searchIngredients } from "../../features/ingredients/searchIngredientsS
 import GroupedIngredientsList from "../ingredients/GroupedIngredientsList";
 import IngredientsList from "../ingredients/IngredientsList";
 import qs from "qs";
-import { fetchBarIngredients, resetBarIngredients } from "../../features/bar/barIngredientsSlice";
+import {
+  fetchBarIngredients,
+  resetBarIngredients,
+} from "../../features/bar/barIngredientsSlice";
 
 export const IngredientsPage = (props) => {
   const { location } = props;
@@ -33,7 +36,7 @@ export const IngredientsPage = (props) => {
 
     return () => {
       dispatch(resetBarIngredients());
-    }
+    };
   }, [dispatch]);
 
   const isSearchParamsEmpty = useCallback(() => {
@@ -41,7 +44,7 @@ export const IngredientsPage = (props) => {
       return true;
     }
     return Object.entries(searchParams).every(
-      (param) => !param[1] ||  (Array.isArray(param[1]) && !param[1].length)
+      (param) => !param[1] || (Array.isArray(param[1]) && !param[1].length)
     );
   }, [searchParams]);
 
@@ -65,13 +68,13 @@ export const IngredientsPage = (props) => {
     <div>
       <IngredientsSearch onSearchParamsChange={handleSearchParamsChange} />
       {(isPending || searchIsPending) && <Loader />}
-      {!isPending && isSearchParamsEmpty() && (
+      {!isPending && isSearchParamsEmpty() && ingredients && (
         <GroupedIngredientsList
           isFavoriteModeOn={addToBarMode}
           ingredients={ingredients}
         />
       )}
-      {!searchIsPending && !isSearchParamsEmpty() && (
+      {!searchIsPending && !isSearchParamsEmpty() && searchedIngredients && (
         <IngredientsList
           isFavoriteModeOn={addToBarMode}
           ingredients={searchedIngredients}

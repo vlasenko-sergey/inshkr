@@ -17,7 +17,28 @@ export const searchCocktails = createAsyncThunk(
   }
 );
 
-const initialState = { items: [], isPending: false };
+export const addCocktail = createAsyncThunk(
+  "cocktails/add",
+  async (cocktail) => {
+    await CocktailsService.createCocktail(cocktail);
+  }
+);
+
+export const updateCocktail = createAsyncThunk(
+  "cocktails/update",
+  async (cocktail) => {
+    await CocktailsService.updateCocktail(cocktail);
+  }
+);
+
+export const deleteCocktail = createAsyncThunk(
+  "cocktails/delete",
+  async (id) => {
+    await CocktailsService.deleteCocktail(id);
+  }
+);
+
+const initialState = { items: [], isPending: false, isDeleted: false };
 
 const cocktailsSlice = createSlice({
   name: "cocktails",
@@ -48,6 +69,51 @@ const cocktailsSlice = createSlice({
     }),
     [searchCocktails.rejected]: (state, action) => ({
       ...state,
+      isPending: false,
+    }),
+    [addCocktail.pending]: (state, action) => ({
+      ...state,
+      isCreated: false,
+      isPending: true,
+    }),
+    [addCocktail.fulfilled]: (state, action) => ({
+      ...state,
+      isCreated: true,
+      isPending: false,
+    }),
+    [addCocktail.rejected]: (state, action) => ({
+      ...state,
+      isCreated: false,
+      isPending: false,
+    }),
+    [updateCocktail.pending]: (state, action) => ({
+      ...state,
+      isCreated: false,
+      isPending: true,
+    }),
+    [updateCocktail.fulfilled]: (state, action) => ({
+      ...state,
+      isCreated: true,
+      isPending: false,
+    }),
+    [updateCocktail.rejected]: (state, action) => ({
+      ...state,
+      isCreated: false,
+      isPending: false,
+    }),
+    [deleteCocktail.pending]: (state, action) => ({
+      ...state,
+      isDeleted: false,
+      isPending: true,
+    }),
+    [deleteCocktail.fulfilled]: (state, action) => ({
+      ...state,
+      isDeleted: true,
+      isPending: false,
+    }),
+    [deleteCocktail.rejected]: (state, action) => ({
+      ...state,
+      isDeleted: false,
       isPending: false,
     }),
   },

@@ -5,7 +5,9 @@ const routes = {
   searchCocktails: () => "/cocktails/search",
   getCocktailById: (id) => `/cocktails/${id}`,
   getCocktailsProperties: () => "/cocktails/properties",
-  
+  createCocktail: () => "/cocktails",
+  updateCocktail: (id) => `/cocktails/${id}`,
+  deleteCocktail: (id) => `/cocktails/${id}`,
 };
 
 export default class CocktailsService {
@@ -27,5 +29,17 @@ export default class CocktailsService {
 
   static getCocktailsProperties() {
     return axios.get(routes.getCocktailsProperties());
+  }
+
+  static createCocktail(cocktail) {
+    return axios.post(routes.createCocktail(), cocktail);
+  }
+
+  static updateCocktail(cocktail) {
+    return axios.put(routes.updateCocktail(cocktail.id), cocktail);
+  }
+
+  static deleteCocktail(id) {
+    return axios.delete(routes.updateCocktail(id));
   }
 }

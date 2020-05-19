@@ -2,20 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as AddToFavoriteIcon } from "../../images/add_to_favorite.svg";
 
+const StyledCocktailImage = styled.img`
+  max-height: 100%;
+  max-width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all ease-in-out 0.3s;
+`;
+
 const StyledCocktailImageWrapper = styled.div`
   text-align: center;
   height: 250px;
   overflow: hidden;
   position: relative;
   flex-grow: 1;
-`;
-
-const StyledCocktailImage = styled.img`
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 const StyledCocktailNameRu = styled.div`
@@ -41,6 +43,11 @@ const StyledCocktailFavoriteMode = styled.div`
 
 const StyledCocktailDefault = styled.div`
   height: 300px;
+
+  :hover ${StyledCocktailImage} {
+    transform: translate(-50%, -50%) scale(1.5);
+    filter: saturate(2);
+  }
 `;
 
 const StyledCocktail = (props) =>
@@ -88,7 +95,8 @@ const StyledIngredientImage = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
 `;
 
 const StyledIngredientImageWrapper = styled.div`

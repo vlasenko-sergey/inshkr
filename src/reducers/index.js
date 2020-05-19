@@ -13,6 +13,8 @@ import searchIngredients from "../features/ingredients/searchIngredientsSlice";
 import barCocktails from "../features/bar/barCocktailsSlice";
 import customCocktails from "../features/cocktails/customCocktailsSlice";
 import customCocktail from "../features/cocktails/customCocktailSlice";
+import tableware from "../features/ingredients/tablewareSlice";
+import garnish from "../features/ingredients/garnishSlice";
 
 const rootReducer = combineReducers({
   cocktails,
@@ -29,6 +31,8 @@ const rootReducer = combineReducers({
   barCocktails,
   customCocktails,
   customCocktail,
+  tableware,
+  garnish,
 });
 
 export default rootReducer;

@@ -9,9 +9,7 @@ export const fetchCustomCocktailById = createAsyncThunk(
   }
 );
 
-
-
-const initialState = { item: null, isPending: false };
+const initialState = { item: null, isPending: false, isCreated: false };
 
 const customCocktailSlice = createSlice({
   name: "customCocktail",

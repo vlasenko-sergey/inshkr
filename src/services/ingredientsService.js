@@ -3,7 +3,10 @@ import axios from "axios";
 const routes = {
   getItems: () => "/items",
   searchItems: () => "/items/search",
-  getIngredientById: (id) => `/items/${id}`,
+  getIngredientById: (id) => `/ingredients/${id}`,
+  createIngredient: () => `/ingredients`,
+  updateIngredient: (id) => `/ingredients/${id}`,
+  deleteIngredient: (id) => `/ingredients/${id}`,
   getItemProperties: () => "/items/properties",
 };
 
@@ -33,5 +36,17 @@ export default class IngredientsService {
 
   static getItemProperties() {
     return axios.get(routes.getItemProperties());
+  }
+
+  static createIngredient(ingredient) {
+    return axios.post(routes.createIngredient(), ingredient);
+  }
+
+  static updateIngredient(ingredient) {
+    return axios.put(routes.updateIngredient(ingredient.id), ingredient);
+  }
+
+  static deleteIngredient(id) {
+    return axios.delete(routes.deleteIngredient(id));
   }
 }

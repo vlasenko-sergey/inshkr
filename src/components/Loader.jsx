@@ -11,22 +11,23 @@ const StyledLoader = styled.div`
   justify-content: center;
   align-items: center;
   pointer-events: none;
+  background-color: rgba(0,0,0,0.2);
 `;
 
 const Loader = () => {
   return (
     <StyledLoader>
-      <div class="loader">
+      <div className="loader">
         <ul>
           <li></li>
           <li></li>
           <li></li>
         </ul>
-        <div class="wineglass left">
-          <div class="top"></div>
+        <div className="wineglass left">
+          <div className="top"></div>
         </div>
-        <div class="wineglass right">
-          <div class="top"></div>
+        <div className="wineglass right">
+          <div className="top"></div>
         </div>
       </div>
     </StyledLoader>

@@ -35,6 +35,7 @@ const StyledCocktailAmount = styled.div`
   justify-content: center;
   align-items: center;
   mix-blend-mode: multiply;
+  pointer-events: none;
 `;
 
 const StyledAddFavoriteButton = styled.div`

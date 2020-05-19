@@ -12,6 +12,8 @@ import {
   deleteIngredientFromBar,
   addIngredientToBar,
 } from "../../features/bar/barIngredientsSlice";
+import { fetchTablewareById } from "../../features/ingredients/tablewareSlice";
+import { fetchGarnishById } from "../../features/ingredients/garnishSlice";
 
 const StyledIngredientPageMain = styled.div`
   display: flex;
@@ -100,20 +102,65 @@ const StyledAddToBarIcon = styled.div`
   }
 `;
 
-export const IngredientPage = () => {
+export const IngredientPage = (props) => {
+  const { type } = props;
   const dispatch = useDispatch();
   const ingredient = useSelector((state) => state.ingredient.item);
-  const isPending = useSelector((state) => state.ingredient.isPending);
+  const isIngredientPending = useSelector(
+    (state) => state.ingredient.isPending
+  );
+  const garnish = useSelector((state) => state.garnish.item);
+  const isGarnishPending = useSelector((state) => state.garnish.isPending);
+  const tableware = useSelector((state) => state.tableware.item);
+  const isTablewarePending = useSelector((state) => state.tableware.isPending);
   const [isInBar, setIsInBar] = useState(false);
   const { id } = useParams();
 
+  const getItem = () => {
+    switch (type) {
+      case "ingredient":
+        return ingredient;
+      case "garnish":
+        return garnish;
+      case "tableware":
+        return tableware;
+      default:
+        return null;
+    }
+  };
+
+  const getPending = () => {
+    switch (type) {
+      case "ingredient":
+        return isIngredientPending;
+      case "garnish":
+        return isGarnishPending;
+      case "tableware":
+        return isTablewarePending;
+      default:
+        return null;
+    }
+  };
+
   useEffect(() => {
-    dispatch(fetchIngredientById(id));
+    switch (type) {
+      case "ingredient":
+        dispatch(fetchIngredientById(id));
+        break;
+      case "tableware":
+        dispatch(fetchTablewareById(id));
+        break;
+      case "garnish":
+        dispatch(fetchGarnishById(id));
+        break;
+      default:
+        break;
+    }
 
     return () => {
       dispatch(resetIngredient());
     };
-  }, [dispatch, id]);
+  }, [dispatch, id, type]);
 
   useEffect(() => {
     if (ingredient) {
@@ -130,40 +177,41 @@ export const IngredientPage = () => {
     setIsInBar(!isInBar);
   };
 
-  if (isPending) {
+  if (getPending()) {
     return <Loader />;
   }
 
-  if (!ingredient) {
+  if (!getItem()) {
     return null;
   }
 
   return (
     <StyledIngredientPage>
-      <StyledAddToBarIcon
-        onClick={handleAddToBarClick}
-        active={isInBar}
-      >
+      <StyledAddToBarIcon onClick={handleAddToBarClick} active={isInBar}>
         <AddToBarIcon />
       </StyledAddToBarIcon>
-      <h1>{ingredient.nameRu}</h1>
-      <h2>{ingredient.nameEn}</h2>
+      <h1>{getItem().nameRu}</h1>
+      <h2>{getItem().nameEn}</h2>
       <StyledInfo>
-        <div>{ingredient.spirit}%</div>
+        {getItem().spirit ? (
+          <>
+            <div>{getItem().spirit}%</div>
+            <StyledInfoCircle />
+          </>
+        ) : null}
+        <div>{getItem().itemSubgroup.name}</div>
         <StyledInfoCircle />
-        <div>{ingredient.itemSubgroup.name}</div>
-        <StyledInfoCircle />
-        <div>{ingredient.itemSubgroup.itemGroup.name}</div>
+        <div>{getItem().itemSubgroup.itemGroup.name}</div>
       </StyledInfo>
       <StyledIngredientPageMain>
         <StyledIngredientPageImageWrapper>
-          <StyledIngredientPageImage src={ingredient.imageRef} alt="" />
+          <StyledIngredientPageImage src={getItem().imageRef} alt="" />
         </StyledIngredientPageImageWrapper>
         <StyledIngredientPageRecipe>
           <StyledIngredientPageRecipeTitle>
             Описание
           </StyledIngredientPageRecipeTitle>
-          <StyledIngredients>{ingredient.legend}</StyledIngredients>
+          <StyledIngredients>{getItem().legend}</StyledIngredients>
         </StyledIngredientPageRecipe>
       </StyledIngredientPageMain>
     </StyledIngredientPage>

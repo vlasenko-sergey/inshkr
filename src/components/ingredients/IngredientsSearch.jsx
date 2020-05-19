@@ -5,6 +5,7 @@ import SearchInput from "../SearchInput";
 import styled from "styled-components";
 import { fetchIngredientsProperties } from "../../features/ingredients/ingredientsPropertiesSlice";
 import debounce from "lodash.debounce";
+import { resetIngredients } from "../../features/ingredients/ingredientsSlice";
 
 const StyledFilterWrapper = styled.div`
   margin-top: 20px;
@@ -21,6 +22,10 @@ const IngredientsSearch = (props) => {
 
   useEffect(() => {
     dispatch(fetchIngredientsProperties());
+
+    return () => {
+      dispatch(resetIngredients());
+    }
   }, [dispatch]);
 
   useEffect(() => {

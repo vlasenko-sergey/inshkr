@@ -32,6 +32,19 @@ const GroupedIngredientsList = (props) => {
   const { ingredients, isFavoriteModeOn } = props;
   const barIngredients = useSelector((state) => state.barIngredients.items);
 
+  const getLinkByType = (type) => {
+    switch (type) {
+      case "Tableware":
+        return "tableware";
+      case "Ingredient":
+        return "ingredient";
+      case "Garnish":
+        return "garnish";
+      default:
+        return "";
+    }
+  };
+
   return (
     <StyledIngredientsListWrapper>
       {ingredients.map((ingredientGroup) => (
@@ -43,7 +56,7 @@ const GroupedIngredientsList = (props) => {
             {ingredientGroup.items &&
               ingredientGroup.items.map((ingredient) => (
                 <StyleIngredientsListItem key={ingredient.id}>
-                  <Link to={`/ingredients/${ingredient.id}`}>
+                  <Link to={`/${getLinkByType(ingredient.dtype)}/${ingredient.id}`}>
                     <Ingredient
                       ingredient={ingredient}
                       isFavoriteModeOn={isFavoriteModeOn}
