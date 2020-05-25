@@ -3,11 +3,12 @@ import qs from "qs";
 
 const configureAxios = () => {
   axios.defaults.baseURL =
-    process.env.NODE_ENV === "production" ? `http://${window.location.hostname}:8080/` : "";
+    process.env.NODE_ENV === "production"
+      ? `http://${window.location.hostname}:8080/`
+      : "";
 
   axios.interceptors.response.use(
-    (response) =>
-      new Promise((resolve) => setTimeout(() => resolve(response.data), 500)),
+    (response) => new Promise((resolve) => resolve(response.data)),
     (error) => {
       return Promise.reject(error.response.data);
     }
