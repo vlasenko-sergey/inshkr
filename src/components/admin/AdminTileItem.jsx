@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as DeleteIcon } from "../../images/delete.svg";
 import { useDispatch } from "react-redux";
 import { deleteIngredient } from "../../features/ingredients/ingredientsSlice";
+import { deleteItemFromList } from "../../features/ingredients/searchIngredientsSlice";
 import { ReactComponent as EditIcon } from "../../images/edit.svg";
 import { deleteTableware } from "../../features/ingredients/tablewareSlice";
 import { deleteGarnish } from "../../features/ingredients/garnishSlice";
@@ -59,15 +60,19 @@ const AdminTileItem = (props) => {
     switch (type) {
       case "ingredient":
         dispatch(deleteIngredient(item.id));
+        dispatch(deleteItemFromList(item.id));
         break;
       case "tableware":
         dispatch(deleteTableware(item.id));
+        dispatch(deleteItemFromList(item.id));
         break;
       case "garnish":
         dispatch(deleteGarnish(item.id));
+        dispatch(deleteItemFromList(item.id));
         break;
       case "cocktail":
         dispatch(deleteCocktail(item.id));
+        dispatch(deleteItemFromList(item.id));
         break;
       default:
         break;
@@ -95,15 +100,19 @@ const AdminTileItem = (props) => {
   };
 
   return (
-    <StyledAdminTileItem>
-      <StyledAdminTileItemNameRu>{item.nameRu}</StyledAdminTileItemNameRu>
-      <StyledDeleteIconWrapper onClick={handleDeleteButtonClick}>
-        <DeleteIcon />
-      </StyledDeleteIconWrapper>
-      <StyledEditIconWrapper onClick={(e) => handleEditButtonClick(item.id, e)}>
-        <EditIcon />
-      </StyledEditIconWrapper>
-    </StyledAdminTileItem>
+    <>
+      <StyledAdminTileItem>
+        <StyledAdminTileItemNameRu>{item.nameRu}</StyledAdminTileItemNameRu>
+        <StyledDeleteIconWrapper onClick={handleDeleteButtonClick}>
+          <DeleteIcon />
+        </StyledDeleteIconWrapper>
+        <StyledEditIconWrapper
+          onClick={(e) => handleEditButtonClick(item.id, e)}
+        >
+          <EditIcon />
+        </StyledEditIconWrapper>
+      </StyledAdminTileItem>
+    </>
   );
 };
 

@@ -23,18 +23,16 @@ export const updateGarnish = createAsyncThunk(
   }
 );
 
-export const deleteGarnish = createAsyncThunk(
-  "garnish/delete",
-  async (id) => {
-    await GarnishsService.deleteGarnish(id);
-  }
-);
+export const deleteGarnish = createAsyncThunk("garnish/delete", async (id) => {
+  await GarnishsService.deleteGarnish(id);
+});
 
 const initialState = {
   isPending: false,
   item: null,
   isCreated: false,
   isDeleted: false,
+  isDeletePending: false,
 };
 
 const garnishSlice = createSlice({
@@ -57,31 +55,43 @@ const garnishSlice = createSlice({
       isPending: false,
     }),
     [createGarnish.pending]: (state, action) => ({
-      isCreated: true,
+      isCreated: false,
+      isPending: true,
     }),
     [createGarnish.fulfilled]: (state, action) => ({
-      isCreated: false,
+      isCreated: true,
+      isPending: false,
     }),
     [createGarnish.rejected]: (state, action) => ({
-      isCreated: false,
+      isCreated: true,
+      isPending: false,
     }),
     [updateGarnish.pending]: (state, action) => ({
-      isCreated: true,
+      isCreated: false,
+      isPending: true,
     }),
     [updateGarnish.fulfilled]: (state, action) => ({
-      isCreated: false,
+      isCreated: true,
+      isPending: false,
     }),
     [updateGarnish.rejected]: (state, action) => ({
       isCreated: false,
+      isPending: false,
     }),
     [deleteGarnish.pending]: (state, action) => ({
-      isDeleted: true,
+      isDeleted: false,
+      isPending: true,
+      isDeletePending: true,
     }),
     [deleteGarnish.fulfilled]: (state, action) => ({
-      isDeleted: false,
+      isDeleted: true,
+      isPending: false,
+      isDeletePending: false,
     }),
     [deleteGarnish.rejected]: (state, action) => ({
       isDeleted: false,
+      isPending: false,
+      isDeletePending: false,
     }),
   },
 });

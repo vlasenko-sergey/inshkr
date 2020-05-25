@@ -4,7 +4,7 @@ import {
   fetchCocktailById,
   resetCocktail,
 } from "../../features/cocktails/cocktailSlice";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import styled from "styled-components";
 import Loader from "../Loader";
 import { ReactComponent as AddToFavoriteIcon } from "../../images/add_to_favorite.svg";
@@ -265,7 +265,9 @@ export const CocktailPage = (props) => {
                 .filter((item) => item.amount)
                 .map((item) => (
                   <StyledIngredientWrapper key={item.id}>
-                    <div>{item.ingredient.nameRu}</div>
+                    <Link to={`/ingredient/${item.ingredient.id}`}>
+                      {item.ingredient.nameRu}
+                    </Link>
                     <StyledIngredientDots />
                     <div>{item.amount * servingsAmount}</div>
                   </StyledIngredientWrapper>
@@ -274,7 +276,9 @@ export const CocktailPage = (props) => {
                 .filter((item) => !item.amount)
                 .map((item) => (
                   <StyledIngredientWrapper key={item.id}>
-                    <div>{item.ingredient.nameRu}</div>
+                    <Link to={`/ingredient/${item.ingredient.id}`}>
+                      <div>{item.ingredient.nameRu}</div>
+                    </Link>
                   </StyledIngredientWrapper>
                 ))}
             </StyledIngredients>

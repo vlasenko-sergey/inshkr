@@ -3,18 +3,28 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import FilterGroup from "../../FilterGroup";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { fetchIngredientsProperties } from "../../../features/ingredients/ingredientsPropertiesSlice";
-import { createIngredient } from "../../../features/ingredients/ingredientsSlice";
+import {
+  createIngredient,
+  updateIngredient,
+} from "../../../features/ingredients/ingredientsSlice";
 import {
   createTableware,
   fetchTablewareById,
+  updateTableware,
+  resetTablewares,
 } from "../../../features/ingredients/tablewareSlice";
 import {
   createGarnish,
   fetchGarnishById,
+  updateGarnish,
+  resetGarnishs,
 } from "../../../features/ingredients/garnishSlice";
-import { fetchIngredientById } from "../../../features/ingredients/ingredientSlice";
+import {
+  fetchIngredientById,
+  resetIngredient,
+} from "../../../features/ingredients/ingredientSlice";
 import { resetSearchIngredients } from "../../../features/ingredients/searchIngredientsSlice";
 import Loader from "../../Loader";
 
@@ -150,6 +160,7 @@ const AdminCreateItemPage = (props) => {
   const { type } = props;
   const [image, setImage] = useState(null);
   const { id } = useParams();
+  const history = useHistory();
   const dispatch = useDispatch();
   const tastes = useSelector(
     (state) => state.ingredientsProperties.items.tastes
@@ -174,16 +185,28 @@ const AdminCreateItemPage = (props) => {
   const [checkedCountry, setCheckedCountry] = useState(null);
   const [checkedSubgroup, setCheckedSubgroup] = useState(null);
   const [checkedBase, setCheckedBase] = useState(null);
-  const ingredient = useSelector((state) => {
+  const [ingredient, isPending, isCreated] = useSelector((state) => {
     switch (type) {
       case "ingredient":
-        return state.ingredient.item;
+        return [
+          state.ingredient.item,
+          state.ingredients.isPending,
+          state.ingredients.isCreated,
+        ];
       case "tableware":
-        return state.tableware.item;
+        return [
+          state.tableware.item,
+          state.tableware.isPending,
+          state.tableware.isCreated,
+        ];
       case "garnish":
-        return state.garnish.item;
+        return [
+          state.garnish.item,
+          state.garnish.isPending,
+          state.garnish.isCreated,
+        ];
       default:
-        return null;
+        return [null, null];
     }
   });
 
@@ -223,8 +246,8 @@ const AdminCreateItemPage = (props) => {
       if (ingredient.itemSubgroup) {
         setCheckedSubgroup(ingredient.itemSubgroup.id);
       }
-      if (ingredient.base) {
-        setCheckedBase(ingredient.base.id);
+      if (ingredient.ingredientBase) {
+        setCheckedBase(ingredient.ingredientBase.id);
       }
       if (ingredient.imageRef) {
         setImage(ingredient.imageRef);
@@ -267,30 +290,58 @@ const AdminCreateItemPage = (props) => {
     onSubmit: (values) => {
       const requestValue = {
         ...values,
+        id,
         taste: checkedTastes.map((taste) => ({ id: taste })),
-        country: { id: checkedCountry },
+        country: checkedCountry ? { id: checkedCountry } : null,
         itemSubgroup: { id: checkedSubgroup },
-        ingredientBase: { id: checkedBase },
+        ingredientBase: checkedBase ? { id: checkedBase } : null,
       };
-      switch (type) {
-        case "ingredient":
-          dispatch(createIngredient(requestValue));
-          break;
-        case "tableware":
-          dispatch(createTableware(requestValue));
-          break;
-        case "garnish":
-          dispatch(createGarnish(requestValue));
-          break;
-        default:
-          break;
+      if (id) {
+        switch (type) {
+          case "ingredient":
+            dispatch(updateIngredient(requestValue));
+            break;
+          case "tableware":
+            dispatch(updateTableware(requestValue));
+            break;
+          case "garnish":
+            dispatch(updateGarnish(requestValue));
+            break;
+          default:
+            break;
+        }
+      } else {
+        switch (type) {
+          case "ingredient":
+            dispatch(createIngredient(requestValue));
+            break;
+          case "tableware":
+            dispatch(createTableware(requestValue));
+            break;
+          case "garnish":
+            dispatch(createGarnish(requestValue));
+            break;
+          default:
+            break;
+        }
       }
     },
   });
 
+  useEffect(() => {
+    if (isCreated) {
+      dispatch(resetIngredient());
+      dispatch(resetGarnishs());
+      dispatch(resetTablewares());
+      history.replace("/admin/ingredients");
+    }
+  }, [isCreated, dispatch, history]);
+
   return (
     <div>
-      {(isPropertiesPending || !ingredientsProperties) && <Loader />}
+      {(isPropertiesPending || !ingredientsProperties || isPending) && (
+        <Loader />
+      )}
       <StyledTitle>
         <div>
           <StyledTitleRu

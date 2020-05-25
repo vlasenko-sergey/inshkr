@@ -14,6 +14,7 @@ import {
 } from "../../features/bar/barIngredientsSlice";
 import { fetchTablewareById } from "../../features/ingredients/tablewareSlice";
 import { fetchGarnishById } from "../../features/ingredients/garnishSlice";
+import CocktailsList from "../cocktails/CocktailsList";
 
 const StyledIngredientPageMain = styled.div`
   display: flex;
@@ -100,6 +101,10 @@ const StyledAddToBarIcon = styled.div`
     }
     `}
   }
+`;
+
+const StyledCocktails = styled.div`
+  margin-top: 50px;
 `;
 
 export const IngredientPage = (props) => {
@@ -214,6 +219,12 @@ export const IngredientPage = (props) => {
           <StyledIngredients>{getItem().legend}</StyledIngredients>
         </StyledIngredientPageRecipe>
       </StyledIngredientPageMain>
+      {getItem().cocktails && getItem().cocktails.length > 0 && (
+        <StyledCocktails>
+          <h2>Коктейли</h2>
+          <CocktailsList cocktails={getItem().cocktails} />
+        </StyledCocktails>
+      )}
     </StyledIngredientPage>
   );
 };

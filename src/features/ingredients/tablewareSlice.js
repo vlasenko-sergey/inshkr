@@ -35,6 +35,7 @@ const initialState = {
   item: null,
   isCreated: false,
   isDeleted: false,
+  isDeletePending: false,
 };
 
 const tablewareSlice = createSlice({
@@ -57,31 +58,43 @@ const tablewareSlice = createSlice({
       isPending: false,
     }),
     [createTableware.pending]: (state, action) => ({
-      isCreated: true,
+      isCreated: false,
+      isPending: true,
     }),
     [createTableware.fulfilled]: (state, action) => ({
-      isCreated: false,
+      isCreated: true,
+      isPending: false,
     }),
     [createTableware.rejected]: (state, action) => ({
-      isCreated: false,
+      isCreated: true,
+      isPending: false,
     }),
     [updateTableware.pending]: (state, action) => ({
-      isCreated: true,
+      isCreated: false,
+      isPending: true,
     }),
     [updateTableware.fulfilled]: (state, action) => ({
-      isCreated: false,
+      isCreated: true,
+      isPending: false,
     }),
     [updateTableware.rejected]: (state, action) => ({
       isCreated: false,
+      isPending: false,
     }),
     [deleteTableware.pending]: (state, action) => ({
-      isDeleted: true,
+      isDeleted: false,
+      isPending: true,
+      isDeletePending: true,
     }),
     [deleteTableware.fulfilled]: (state, action) => ({
-      isDeleted: false,
+      isDeleted: true,
+      isPending: false,
+      isDeletePending: false,
     }),
     [deleteTableware.rejected]: (state, action) => ({
       isDeleted: false,
+      isPending: false,
+      isDeletePending: false,
     }),
   },
 });

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCocktailsProperties } from "../../../features/cocktails/cocktailsPropertiesSlice";
 import FilterGroup from "../../FilterGroup";
 import Loader from "../../Loader";
-import { searchIngredientsTablewareAndGarnish } from "../../../features/ingredients/searchIngredientsSlice";
+import { searchIngredientsTablewareAndGarnish, resetSearchIngredients } from "../../../features/ingredients/searchIngredientsSlice";
 import { useParams, useHistory } from "react-router-dom";
 import { ReactComponent as DeleteIcon } from "../../../images/delete.svg";
 import {
@@ -183,6 +183,7 @@ const AdminCreateCocktailPage = () => {
 
     return () => {
       dispatch(resetCocktail());
+      dispatch(resetSearchIngredients());
     };
   }, [dispatch, id]);
 

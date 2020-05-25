@@ -32,6 +32,16 @@ const searchIngredientsSlice = createSlice({
   initialState: initialState,
   reducers: {
     resetSearchIngredients: (state, action) => initialState,
+    deleteItemFromList: (state, action) => {
+      const id = action.payload;
+      const index = state.items.findIndex((item) => item.id === id);
+      if (index > -1) {
+        const items = state.items;
+        items.splice(index, 1);
+        state.items = [...items];
+      }
+      return state;
+    },
   },
   extraReducers: {
     [searchIngredients.pending]: (state, action) => ({
@@ -61,6 +71,9 @@ const searchIngredientsSlice = createSlice({
   },
 });
 
-export const { resetSearchIngredients } = searchIngredientsSlice.actions;
+export const {
+  resetSearchIngredients,
+  deleteItemFromList,
+} = searchIngredientsSlice.actions;
 
 export default searchIngredientsSlice.reducer;

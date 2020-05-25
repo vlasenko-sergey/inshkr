@@ -35,10 +35,18 @@ const AdminIngredientsList = (props) => {
     <StyledIngredientsListWrapper>
       <StyledIngredientsList>
         {ingredients &&
+          Array.isArray(ingredients) &&
           ingredients.map((ingredient) => (
             <StyleIngredientsListItem key={`ingredient${ingredient.id}`}>
-              <Link to={`/admin/${getLinkByType(ingredient.dtype)}/${ingredient.id}`}>
-                <AdminTileItem item={ingredient} type={ingredient.dtype.toLowerCase()} />
+              <Link
+                to={`/admin/${getLinkByType(ingredient.dtype)}/${
+                  ingredient.id
+                }`}
+              >
+                <AdminTileItem
+                  item={ingredient}
+                  type={ingredient.dtype.toLowerCase()}
+                />
               </Link>
             </StyleIngredientsListItem>
           ))}
