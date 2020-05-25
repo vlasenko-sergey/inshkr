@@ -7,6 +7,11 @@ const configureAxios = () => {
       ? `http://${window.location.hostname}:8080/`
       : "";
 
+  axios.interceptors.request.use((config) => {
+    config.withCredentials = true;
+    return config;
+  });
+
   axios.interceptors.response.use(
     (response) => new Promise((resolve) => resolve(response.data)),
     (error) => {
