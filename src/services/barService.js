@@ -21,6 +21,6 @@ export default class BarService {
   }
 
   static getCocktails(id) {
-    return axios.get(routes.getCocktails(), { params: { tolerance: 100 } });
+    return axios.get(routes.getCocktails(), { params: { tolerance: 0 } });
   }
 }

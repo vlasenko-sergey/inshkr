@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchParty, resetParty } from "../../features/parties/partySlice";
+import {
+  fetchParty,
+  resetParty,
+  invite,
+  dismiss,
+} from "../../features/parties/partySlice";
 import styled from "styled-components";
 import CocktailsList from "../cocktails/CocktailsList";
 import Loader from "../Loader";
 import { getCountLabel } from "../../utils/utils";
+import { fetchUsers, resetUsers } from "../../features/users/usersSlice";
+import UsersModal from "../modals/UsersModal";
 
 const StyledPartyGuestsInfo = styled.div`
   display: flex;
@@ -36,6 +43,7 @@ const StyledH2 = styled.h2`
 
 const StyledMainInfo = styled.div`
   display: flex;
+  margin-bottom: 40px;
 `;
 
 const StyledMainInfoIngredients = styled.div`
@@ -72,22 +80,64 @@ const StyledTableware = styled.div`
   }
 `;
 
+const StyledDismissButton = styled.button`
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-left: 20px;
+  padding: 0;
+`;
+
+const StyledMember = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+const StyledMembers = styled.div`
+  width: fit-content;
+`;
+
+const StyledInviteButton = styled.button`
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 22px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-top: 30px;
+
+  img {
+    margin-right: 8px;
+  }
+`;
+
 const PartyPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const party = useSelector((state) => state.party.item);
   const isPending = useSelector((state) => state.party.isPending);
   const [cocktailsAmount, setCocktailsAmount] = useState({});
+  const [isUsersModalOpen, setIsUsersModalOpen] = useState(false);
+  const users = useSelector((state) => state.users.items);
+  const user = useSelector(state => state.user.item);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchParty(id));
+      dispatch(fetchUsers());
     }
   }, [dispatch, id]);
 
   useEffect(() => {
     return () => {
       dispatch(resetParty());
+      dispatch(resetUsers());
     };
   }, [dispatch]);
 
@@ -101,6 +151,18 @@ const PartyPage = () => {
     }
   }, [party]);
 
+  const handleAddMemberButtonClick = () => {
+    setIsUsersModalOpen(true);
+  };
+
+  const handleUserClick = (user) => {
+    dispatch(invite({ partyId: party.id, user }));
+  };
+
+  const handleDeleteMemberClick = (id) => {
+    dispatch(dismiss({ partyId: party.id, userId: id }));
+  };
+
   if (isPending) {
     return <Loader />;
   }
@@ -111,6 +173,21 @@ const PartyPage = () => {
 
   return (
     <div>
+      {users && (
+        <UsersModal
+          isOpen={isUsersModalOpen}
+          setIsOpen={setIsUsersModalOpen}
+          users={users.filter((user) => {
+            if (party.author && user.id === party.author.id) {
+              return false;
+            }
+            return (
+              party.members.findIndex((member) => member.id === user.id) < 0
+            );
+          })}
+          onUserClick={handleUserClick}
+        />
+      )}
       <h1>{party.name}</h1>
       <StyledPartyInfo>
         <StyledPartyGuestsInfo>
@@ -178,6 +255,26 @@ const PartyPage = () => {
           </StyledMainInfoContent>
         </div>
       </StyledMainInfo>
+      <StyledH2>Гости:</StyledH2>
+      <StyledMembers>
+        {party.members.map((member) => (
+          <StyledMember>
+            {member.username}
+            {party.author && party.author.id === user.id && (
+              <StyledDismissButton
+                onClick={() => handleDeleteMemberClick(member.id)}
+              >
+                <img src="/dismiss_member.png" alt="" />
+              </StyledDismissButton>
+            )}
+          </StyledMember>
+        ))}
+        {party.author && party.author.id === user.id && (
+          <StyledInviteButton onClick={handleAddMemberButtonClick}>
+            <img src="/invite_member.png" alt="" /> Пригласить
+          </StyledInviteButton>
+        )}
+      </StyledMembers>
     </div>
   );
 };

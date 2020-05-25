@@ -275,13 +275,13 @@ const BarCreateCocktailPage = () => {
       const requestValue = {
         ...values,
         taste: checkedTastes.map((taste) => ({ id: taste })),
-        mixingMethod: { id: checkedMixingMethod },
-        glass: { id: checkedTableware },
-        garnish: { id: checkedGarnish },
-        recipePart: ingredients.map((ingredient) => ({
+        mixingMethod: checkedMixingMethod ? { id: checkedMixingMethod } : null,
+        glass: checkedTableware ? { id: checkedTableware } : null,
+        garnish: checkedGarnish ? { id: checkedGarnish } : null,
+        recipePart: ingredients.filter(ingredient => Number(ingredient.id) !== 0).length > 0 ? ingredients.map((ingredient) => ({
           ingredient: { id: Number(ingredient.id) },
           amount: Number(ingredient.amount),
-        })),
+        })) : null,
       };
       if (id) {
         dispatch(updateCustomCocktail({ ...requestValue, id }));

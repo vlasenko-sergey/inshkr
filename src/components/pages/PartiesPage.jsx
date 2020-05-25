@@ -32,7 +32,6 @@ const StyledCreatePartyLink = styled(Link)`
   }
 `;
 
-
 const StyledPartyItems = styled.div``;
 
 const StyledPartyHeader = styled.h1`

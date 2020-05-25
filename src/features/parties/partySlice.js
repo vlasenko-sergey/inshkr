@@ -21,6 +21,22 @@ export const updateParty = createAsyncThunk("party/update", async (party) => {
   return updatedParty;
 });
 
+export const invite = createAsyncThunk(
+  "party/invite",
+  async ({ partyId, user }) => {
+    await PartiesService.invite(partyId, user.id);
+    return user;
+  }
+);
+
+export const dismiss = createAsyncThunk(
+  "party/dismiss",
+  async ({ partyId, userId }) => {
+    await PartiesService.dismiss(partyId, userId);
+    return userId;
+  }
+);
+
 const initialState = {
   item: null,
   isPending: false,
@@ -89,6 +105,30 @@ const partySlice = createSlice({
       ...state,
       isDeletePending: false,
     }),
+    [invite.pending]: (state, action) => {},
+    [invite.fulfilled]: (state, action) => {
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          members: [...state.item.members, action.payload],
+        },
+      };
+    },
+    [invite.rejected]: (state, action) => {},
+    [dismiss.pending]: (state, action) => {},
+    [dismiss.fulfilled]: (state, action) => {
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          members: state.item.members.filter(
+            (member) => member.id !== action.payload
+          ),
+        },
+      };
+    },
+    [dismiss.rejected]: (state, action) => {},
   },
 });
 

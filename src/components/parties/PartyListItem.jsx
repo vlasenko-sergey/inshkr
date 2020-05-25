@@ -7,6 +7,7 @@ import { ReactComponent as DeleteIcon } from "../../images/delete.svg";
 import { deleteParty } from "../../features/parties/partySlice";
 import { getCountLabel } from "../../utils/utils";
 import SmallLoader from "../SmallLoader";
+import { leaveParty } from "../../features/parties/partiesSlice";
 
 const StyledPartyItem = styled(Link)`
   margin-bottom: 30px;
@@ -68,6 +69,7 @@ const StyledPartyInfoCount = styled.div`
 
 const PartyListItem = (props) => {
   const { party } = props;
+  const user = useSelector((state) => state.user.item);
 
   const isDeletePending = useSelector((state) => state.party.isDeletePending);
 
@@ -76,7 +78,11 @@ const PartyListItem = (props) => {
 
   const handleDeleteButtonClick = (id, e) => {
     e.preventDefault();
-    dispatch(deleteParty(id));
+    if (party.author && party.author.id === user.id) {
+      dispatch(deleteParty(id));
+    } else {
+      dispatch(leaveParty(id));
+    }
   };
 
   const handleEditButtonClick = (id, e) => {
@@ -110,6 +116,12 @@ const PartyListItem = (props) => {
           <>
             <StyledEditIconWrapper
               onClick={(e) => handleEditButtonClick(party.id, e)}
+              style={{
+                visibility:
+                  party.author && party.author.id === user.id
+                    ? "visible"
+                    : "hidden",
+              }}
             >
               <EditIcon />
             </StyledEditIconWrapper>

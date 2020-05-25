@@ -6,6 +6,9 @@ const routes = {
   createParty: () => "/party",
   deleteParty: (id) => `/party/${id}`,
   updateParty: (id) => `/party/${id}`,
+  invite: (partyId) => `/party/${partyId}/invite`,
+  dismiss: (partyId) => `/party/${partyId}/dismiss`,
+  leave: (partyId) => `/party/${partyId}/leave`,
 };
 
 export default class PartiesService {
@@ -48,5 +51,17 @@ export default class PartiesService {
 
   static deleteParty(id) {
     return axios.delete(routes.deleteParty(id), {});
+  }
+
+  static invite(partyId, userId) {
+    return axios.put(routes.invite(partyId), { id: userId });
+  }
+
+  static dismiss(partyId, userId) {
+    return axios.put(routes.dismiss(partyId), { id: userId });
+  }
+
+  static leave(partyId) {
+    return axios.put(routes.leave(partyId));
   }
 }

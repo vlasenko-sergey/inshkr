@@ -6,6 +6,11 @@ export const fetchParties = createAsyncThunk("parties/fetchAll", async () => {
   return parties;
 });
 
+export const leaveParty = createAsyncThunk("party/leave", async (id) => {
+  await PartiesService.leave(id);
+  return id;
+});
+
 const initialState = { items: null, isPending: false };
 
 const partiesSlice = createSlice({
@@ -15,14 +20,14 @@ const partiesSlice = createSlice({
     resetParties: (state, action) => initialState,
     deletePartyFromList: (state, action) => {
       const id = action.payload;
-      const index = state.items.findIndex(item => item.id === id);
+      const index = state.items.findIndex((item) => item.id === id);
       if (index > -1) {
         const items = state.items;
         items.splice(index, 1);
         state.items = [...items];
       }
       return state;
-    } 
+    },
   },
   extraReducers: {
     [fetchParties.pending]: (state, action) => ({
@@ -37,6 +42,18 @@ const partiesSlice = createSlice({
       ...state,
       isPending: false,
     }),
+    [leaveParty.pending]: (state, action) => {},
+    [leaveParty.fulfilled]: (state, action) => {
+      const id = action.payload;
+      const index = state.items.findIndex((item) => item.id === id);
+      if (index > -1) {
+        const items = state.items;
+        items.splice(index, 1);
+        state.items = [...items];
+      }
+      return state;
+    },
+    [leaveParty.rejected]: (state, action) => {},
   },
 });
 
