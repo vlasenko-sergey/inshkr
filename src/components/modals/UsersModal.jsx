@@ -10,6 +10,9 @@ const authModalStyles = {
     transform: "translate(-50%, -50%)",
     padding: "0",
   },
+  overlay: {
+    "z-index": "2",
+  }
 };
 
 const StyledUser = styled.div`
