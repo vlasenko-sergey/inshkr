@@ -175,9 +175,9 @@ export const IngredientPage = (props) => {
 
   const handleAddToBarClick = () => {
     if (isInBar) {
-      dispatch(deleteIngredientFromBar(ingredient.id));
+      dispatch(deleteIngredientFromBar(getItem().id));
     } else {
-      dispatch(addIngredientToBar(ingredient.id));
+      dispatch(addIngredientToBar(getItem().id));
     }
     setIsInBar(!isInBar);
   };

@@ -125,7 +125,7 @@ const PartyPage = () => {
   const [cocktailsAmount, setCocktailsAmount] = useState({});
   const [isUsersModalOpen, setIsUsersModalOpen] = useState(false);
   const users = useSelector((state) => state.users.items);
-  const user = useSelector(state => state.user.item);
+  const user = useSelector((state) => state.user.item);
 
   useEffect(() => {
     if (id) {
@@ -255,7 +255,7 @@ const PartyPage = () => {
           </StyledMainInfoContent>
         </div>
       </StyledMainInfo>
-      <StyledH2>Гости:</StyledH2>
+      {party.author && <StyledH2>Гости:</StyledH2>}
       <StyledMembers>
         {party.members.map((member) => (
           <StyledMember>
