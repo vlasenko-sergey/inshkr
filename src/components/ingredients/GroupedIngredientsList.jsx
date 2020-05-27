@@ -57,7 +57,7 @@ const GroupedIngredientsList = (props) => {
               ingredientGroup.items.map((ingredient) => (
                 <StyleIngredientsListItem key={ingredient.id}>
                   <Link to={`/${getLinkByType(ingredient.dtype)}/${ingredient.id}`}>
-                    <Ingredient
+                    {barIngredients && <Ingredient
                       ingredient={ingredient}
                       isFavoriteModeOn={isFavoriteModeOn}
                       isChecked={
@@ -65,7 +65,7 @@ const GroupedIngredientsList = (props) => {
                           (item) => item.id === ingredient.id
                         ) > -1
                       }
-                    />
+                    />}
                   </Link>
                 </StyleIngredientsListItem>
               ))}

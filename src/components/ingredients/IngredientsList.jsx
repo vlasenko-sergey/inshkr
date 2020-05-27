@@ -96,7 +96,7 @@ const IngredientsList = (props) => {
           ingredients.map((ingredient) => (
             <StyleIngredientsListItem key={`ingredient${ingredient.id}`}>
               <Link to={`/${getLinkByType(ingredient.dtype)}/${ingredient.id}`}>
-                <Ingredient
+                {barIngredients && <Ingredient
                   ingredient={ingredient}
                   isFavoriteModeOn={isFavoriteModeOn}
                   isChecked={
@@ -104,7 +104,7 @@ const IngredientsList = (props) => {
                       (item) => item.id === ingredient.id
                     ) > -1
                   }
-                />
+                />}
               </Link>
             </StyleIngredientsListItem>
           ))}
