@@ -29,7 +29,7 @@ const FilterGroup = (props) => {
 
   const handleFilterClick = (newValue) => {
     if (multiple) {
-      const index = value.findIndex((item) => item === newValue);
+      const index = Number(value).findIndex((item) => item === newValue);
       if (index > -1) {
         const newValueArray = [...value];
         newValueArray.splice(index, 1);
@@ -38,7 +38,7 @@ const FilterGroup = (props) => {
         onFilterChange([...value, newValue]);
       }
     } else {
-      onFilterChange(value === newValue ? null : newValue);
+      onFilterChange(Number(value) === newValue ? null : newValue);
     }
   };
 
@@ -46,7 +46,7 @@ const FilterGroup = (props) => {
     if (multiple) {
       return value && value.includes(filter.id);
     }
-    return value === filter.id;
+    return Number(value) === filter.id;
   };
 
   return (

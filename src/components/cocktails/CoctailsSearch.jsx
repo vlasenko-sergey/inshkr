@@ -5,6 +5,7 @@ import SearchInput from "../SearchInput";
 import debounce from "lodash.debounce";
 import styled from "styled-components";
 import { fetchCocktailsProperties } from "../../features/cocktails/cocktailsPropertiesSlice";
+import { useLocation } from "react-router-dom";
 
 const StyledFilterWrapper = styled.div`
   margin-top: 20px;
@@ -21,8 +22,10 @@ const CocktailsSearch = (props) => {
   );
   const groups = useSelector((state) => state.cocktailsProperties.items.groups);
   const tastes = useSelector((state) => state.cocktailsProperties.items.tastes);
-
-  const [searchParams, setSearchParams] = useState({tastes: []});
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const base = params.get("base");
+  const [searchParams, setSearchParams] = useState({ tastes: [], base });
 
   useEffect(() => {
     dispatch(fetchCocktailsProperties());

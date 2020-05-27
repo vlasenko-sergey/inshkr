@@ -234,7 +234,7 @@ export const CocktailPage = (props) => {
         <StyledInfo>
           {cocktail.base && (
             <>
-              <div>{cocktail.base.nameRu}</div>
+              <Link to={`/cocktails?base=${cocktail.base.id}`}>{cocktail.base.name}</Link>
               <StyledInfoCircle />
             </>
           )}
@@ -264,7 +264,7 @@ export const CocktailPage = (props) => {
               {cocktail.recipePart
                 .filter((item) => item.amount)
                 .map((item) => (
-                  <StyledIngredientWrapper key={item.id}>
+                  <StyledIngredientWrapper key={item.ingredient.id}>
                     <Link to={`/ingredient/${item.ingredient.id}`}>
                       {item.ingredient.nameRu}
                     </Link>
@@ -275,7 +275,7 @@ export const CocktailPage = (props) => {
               {cocktail.recipePart
                 .filter((item) => !item.amount)
                 .map((item) => (
-                  <StyledIngredientWrapper key={item.id}>
+                  <StyledIngredientWrapper key={item.ingredient.id}>
                     <Link to={`/ingredient/${item.ingredient.id}`}>
                       <div>{item.ingredient.nameRu}</div>
                     </Link>

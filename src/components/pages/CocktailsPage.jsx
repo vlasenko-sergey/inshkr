@@ -7,12 +7,16 @@ import {
 } from "../../features/cocktails/cocktailsSlice";
 import CocktailsList from "../cocktails/CocktailsList";
 import Loader from "../Loader";
+import { useLocation } from "react-router-dom";
 
 export const CocktailsPage = () => {
   const dispatch = useDispatch();
   const cocktails = useSelector((state) => state.cocktails.items);
   const isPending = useSelector((state) => state.cocktails.isPending);
-  const [searchParams, setSearchParams] = useState({tastes: []});
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const base = params.get("base");
+  const [searchParams, setSearchParams] = useState({ tastes: [], base });
 
   useEffect(() => {
     if (searchParams) {
