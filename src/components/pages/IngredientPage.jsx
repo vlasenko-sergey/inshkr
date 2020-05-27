@@ -120,6 +120,7 @@ export const IngredientPage = (props) => {
   const isTablewarePending = useSelector((state) => state.tableware.isPending);
   const [isInBar, setIsInBar] = useState(false);
   const { id } = useParams();
+  const user = useSelector((state) => state.user.item);
 
   const getItem = () => {
     switch (type) {
@@ -192,9 +193,11 @@ export const IngredientPage = (props) => {
 
   return (
     <StyledIngredientPage>
-      <StyledAddToBarIcon onClick={handleAddToBarClick} active={isInBar}>
-        <AddToBarIcon />
-      </StyledAddToBarIcon>
+      {user && (
+        <StyledAddToBarIcon onClick={handleAddToBarClick} active={isInBar}>
+          <AddToBarIcon />
+        </StyledAddToBarIcon>
+      )}
       <h1>{getItem().nameRu}</h1>
       <h2>{getItem().nameEn}</h2>
       <StyledInfo>

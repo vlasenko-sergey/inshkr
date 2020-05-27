@@ -151,6 +151,7 @@ export const CocktailPage = (props) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const { id } = useParams();
   const [servingsAmount, setServingsAmount] = useState(1);
+  const user = useSelector(state => state.user.item);
 
   useEffect(() => {
     if (cocktail) {
@@ -215,7 +216,7 @@ export const CocktailPage = (props) => {
   return (
     cocktail && (
       <StyledCocktailPage>
-        {!customCocktail && (
+        {!customCocktail && user && (
           <StyledAddToFavoriteIcon
             onClick={handleAddToFavoriteClick}
             active={isFavorite}
