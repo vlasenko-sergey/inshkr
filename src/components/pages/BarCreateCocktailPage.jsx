@@ -193,9 +193,9 @@ const BarCreateCocktailPage = () => {
   useEffect(() => {
     if (cocktail) {
       setCheckedTastes([...cocktail.taste.map((taste) => taste.id)]);
-      setCheckedMixingMethod(cocktail.mixingMethod.id);
-      setCheckedTableware(cocktail.glass.id);
-      setCheckedGarnish(cocktail.garnish.id);
+      setCheckedMixingMethod(cocktail.mixingMethod?.id);
+      setCheckedTableware(cocktail.glass?.id);
+      setCheckedGarnish(cocktail.garnish?.id);
       setIngredients(
         cocktail.recipePart.map((item) => ({
           id: item.ingredient.id,

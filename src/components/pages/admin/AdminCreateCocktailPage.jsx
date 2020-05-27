@@ -190,8 +190,8 @@ const AdminCreateCocktailPage = () => {
   useEffect(() => {
     if (cocktail) {
       setCheckedTastes([...cocktail.taste.map((taste) => taste.id)]);
-      setCheckedMixingMethod(cocktail.mixingMethod.id);
-      setCheckedTableware(cocktail.glass.id);
+      setCheckedMixingMethod(cocktail.mixingMethod?.id);
+      setCheckedTableware(cocktail.glass?.id);
       if (cocktail.garnish) {
         setCheckedGarnish(cocktail.garnish.id);
 
