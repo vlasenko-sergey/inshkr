@@ -45,6 +45,10 @@ const CocktailsSearch = (props) => {
     setSearchParams({ ...searchParams, [filterName]: filterValue });
   };
 
+  useEffect(() => {
+    setSearchParams((oldParams) => ({...oldParams, base}));
+  }, [base]);
+
   return (
     <div>
       <SearchInput placeholder="Поиск" onChange={handleOnSearchChange} />

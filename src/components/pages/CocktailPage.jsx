@@ -234,7 +234,7 @@ export const CocktailPage = (props) => {
         <StyledInfo>
           {cocktail.base && (
             <>
-              <Link to={`/cocktails?base=${cocktail.base.id}`}>{cocktail.base.name}</Link>
+              <Link to={`../cocktails?base=${cocktail.base.id}`}>{cocktail.base.name}</Link>
               <StyledInfoCircle />
             </>
           )}
