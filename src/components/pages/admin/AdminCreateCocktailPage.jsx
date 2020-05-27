@@ -5,13 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCocktailsProperties } from "../../../features/cocktails/cocktailsPropertiesSlice";
 import FilterGroup from "../../FilterGroup";
 import Loader from "../../Loader";
-import { searchIngredientsTablewareAndGarnish, resetSearchIngredients } from "../../../features/ingredients/searchIngredientsSlice";
+import {
+  searchIngredientsTablewareAndGarnish,
+  resetSearchIngredients,
+} from "../../../features/ingredients/searchIngredientsSlice";
 import { useParams, useHistory } from "react-router-dom";
 import { ReactComponent as DeleteIcon } from "../../../images/delete.svg";
 import {
-  addCocktail, updateCocktail,
+  addCocktail,
+  updateCocktail,
 } from "../../../features/cocktails/cocktailsSlice";
-import { fetchCocktailById, resetCocktail } from "../../../features/cocktails/cocktailSlice";
+import {
+  fetchCocktailById,
+  resetCocktail,
+} from "../../../features/cocktails/cocktailSlice";
+import Swal from "sweetalert2";
 
 const StyledImageWrapper = styled.div`
   width: 390px;
@@ -194,7 +202,6 @@ const AdminCreateCocktailPage = () => {
       setCheckedTableware(cocktail.glass?.id);
       if (cocktail.garnish) {
         setCheckedGarnish(cocktail.garnish.id);
-
       }
       setIngredients(
         cocktail.recipePart.map((item) => ({
@@ -207,8 +214,14 @@ const AdminCreateCocktailPage = () => {
 
   useEffect(() => {
     if (isCreated) {
-      dispatch(resetCocktail());
-      history.replace("/admin/cocktails");
+      Swal.fire({
+        icon: "success",
+        title: "Отлично!",
+        text: "Коктейль был успешно добавлен",
+      }).then((res) => {
+        dispatch(resetCocktail());
+        history.replace("/admin/cocktails");
+      });
     }
   }, [isCreated, dispatch, history]);
 
@@ -278,10 +291,14 @@ const AdminCreateCocktailPage = () => {
         mixingMethod: checkedMixingMethod ? { id: checkedMixingMethod } : null,
         glass: checkedTableware ? { id: checkedTableware } : null,
         garnish: checkedGarnish ? { id: checkedGarnish } : null,
-        recipePart: ingredients.filter(ingredient => Number(ingredient.id) !== 0).length > 0 ? ingredients.map((ingredient) => ({
-          ingredient: { id: Number(ingredient.id) },
-          amount: Number(ingredient.amount),
-        })) : null,
+        recipePart:
+          ingredients.filter((ingredient) => Number(ingredient.id) !== 0)
+            .length > 0
+            ? ingredients.map((ingredient) => ({
+                ingredient: { id: Number(ingredient.id) },
+                amount: Number(ingredient.amount),
+              }))
+            : null,
       };
       if (id) {
         dispatch(updateCocktail({ ...requestValue, id }));
