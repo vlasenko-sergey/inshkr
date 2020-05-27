@@ -35,6 +35,7 @@ export const deleteCocktail = createAsyncThunk(
   "cocktails/delete",
   async (id) => {
     await CocktailsService.deleteCocktail(id);
+    return id;
   }
 );
 
@@ -104,17 +105,15 @@ const cocktailsSlice = createSlice({
     [deleteCocktail.pending]: (state, action) => ({
       ...state,
       isDeleted: false,
-      isPending: true,
     }),
     [deleteCocktail.fulfilled]: (state, action) => ({
       ...state,
       isDeleted: true,
-      isPending: false,
+      items: state.items.filter((item) => item.id !== action.payload),
     }),
     [deleteCocktail.rejected]: (state, action) => ({
       ...state,
       isDeleted: false,
-      isPending: false,
     }),
   },
 });

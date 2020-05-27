@@ -9,6 +9,7 @@ import { deleteTableware } from "../../features/ingredients/tablewareSlice";
 import { deleteGarnish } from "../../features/ingredients/garnishSlice";
 import { useHistory } from "react-router-dom";
 import { deleteCocktail } from "../../features/cocktails/cocktailsSlice";
+import Swal from "sweetalert2";
 
 const StyledAdminTileItemNameRu = styled.div`
   font-size: 14px;
@@ -57,26 +58,39 @@ const AdminTileItem = (props) => {
   const handleDeleteButtonClick = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    switch (type) {
-      case "ingredient":
-        dispatch(deleteIngredient(item.id));
-        dispatch(deleteItemFromList(item.id));
-        break;
-      case "tableware":
-        dispatch(deleteTableware(item.id));
-        dispatch(deleteItemFromList(item.id));
-        break;
-      case "garnish":
-        dispatch(deleteGarnish(item.id));
-        dispatch(deleteItemFromList(item.id));
-        break;
-      case "cocktail":
-        dispatch(deleteCocktail(item.id));
-        dispatch(deleteItemFromList(item.id));
-        break;
-      default:
-        break;
-    }
+    Swal.fire({
+      title: "Вы уверены?",
+      text: "Коктейль будет удалён без возможности восстановления!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Отмена",
+      confirmButtonText: "Да, удалить!",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        switch (type) {
+          case "ingredient":
+            dispatch(deleteIngredient(item.id));
+            dispatch(deleteItemFromList(item.id));
+            break;
+          case "tableware":
+            dispatch(deleteTableware(item.id));
+            dispatch(deleteItemFromList(item.id));
+            break;
+          case "garnish":
+            dispatch(deleteGarnish(item.id));
+            dispatch(deleteItemFromList(item.id));
+            break;
+          case "cocktail":
+            dispatch(deleteCocktail(item.id));
+            dispatch(deleteItemFromList(item.id));
+            break;
+          default:
+            break;
+        }
+      }
+    });
   };
 
   const handleEditButtonClick = (id, e) => {
