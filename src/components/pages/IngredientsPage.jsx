@@ -14,6 +14,23 @@ import {
   fetchBarIngredients,
   resetBarIngredients,
 } from "../../features/bar/barIngredientsSlice";
+import { ReactComponent as ArrowBack } from "../../images/back.svg";
+import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+
+const StyledBackButton = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  line-height: 29px;
+  margin-bottom: 10px;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    margin-right: 5px;
+  }
+`;
 
 export const IngredientsPage = (props) => {
   const { location } = props;
@@ -21,6 +38,7 @@ export const IngredientsPage = (props) => {
     ignoreQueryPrefix: true,
   });
   const dispatch = useDispatch();
+  const history = useHistory();
   const ingredients = useSelector((state) => state.ingredients.items);
   const isPending = useSelector((state) => state.ingredients.isPending);
   const searchedIngredients = useSelector(
@@ -64,8 +82,18 @@ export const IngredientsPage = (props) => {
     setSearchParams(searchParams);
   }, []);
 
+  const handleBackToBarButtonClick = () => {
+    history.push('/bar/ingredients');
+  }
+
   return (
     <div>
+      {addToBarMode && (
+        <StyledBackButton onClick={handleBackToBarButtonClick}>
+          <ArrowBack />
+          Вернуться в бар
+        </StyledBackButton>
+      )}
       <IngredientsSearch onSearchParamsChange={handleSearchParamsChange} />
       {(isPending || searchIsPending) && <Loader />}
       {!isPending && isSearchParamsEmpty() && ingredients && (
