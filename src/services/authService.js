@@ -34,7 +34,7 @@ export default class AuthService {
         passwordConfirm,
       })
       .then((res) => {
-        window.location.href = window.location.hostname;
+        window.location.reload();
       });
   }
 }

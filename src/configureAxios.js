@@ -18,7 +18,7 @@ const configureAxios = () => {
     },
     (error) => {
       if (["/login", "/login?logout"].some((url) => error.config.url === url)) {
-        window.location.href = window.location.hostname;
+        window.location.reload();
       }
       return Promise.reject(error.response?.data);
     }
