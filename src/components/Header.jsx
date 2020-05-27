@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AuthModal from "./modals/AuthModal";
+import { useSelector } from "react-redux";
+import AuthService from "../services/authService";
 
 const StyledHeader = styled.div`
   height: 60px;
@@ -49,15 +51,43 @@ const StyledHeaderAccount = styled.div`
   height: 45px;
   border-radius: 50%;
   background: #797979;
-  position: absolute;
-  right: 60px;
   background-image: url("https://cdn4.iconfinder.com/data/icons/esophageal-esophagus-throat-cancer/255/esophageal-cancer-007-512.png");
   background-position: -5px 4px;
   background-size: cover;
 `;
 
+const StyledAuthButton = styled.button`
+  background: none;
+  outline: none;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  margin-left: 10px;
+`;
+
+const StyledAuthBlock = styled.div`
+  display: flex;
+  position: absolute;
+  right: 60px;
+  align-items: center;
+`;
+
 const Header = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const user = useSelector((state) => state.user);
+
+  const handleAuthButtonClick = () => {
+    setIsAuthModalOpen(true);
+  };
+
+  const handleLogoutButtonClick = () => {
+    AuthService.logout();
+  };
 
   return (
     <>
@@ -72,8 +102,21 @@ const Header = () => {
             <StyledHeaderMenuDivider />
             <Link to="/ingredients">Ингредиенты</Link>
           </StyledHeaderMenu>
-          <StyledHeaderAccount />
-          {/* <div onClick={handleAuthButtonClick}>Войти</div> */}
+          {user.item && (
+            <StyledAuthBlock>
+              <StyledHeaderAccount />
+              <StyledAuthButton onClick={handleLogoutButtonClick}>
+                Выйти
+              </StyledAuthButton>
+            </StyledAuthBlock>
+          )}
+          {!user.item && user.notAuthed && (
+            <StyledAuthBlock>
+              <StyledAuthButton onClick={handleAuthButtonClick}>
+                Войти
+              </StyledAuthButton>
+            </StyledAuthBlock>
+          )}
         </StyledHeaderContent>
       </StyledHeader>
     </>

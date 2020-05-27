@@ -6,7 +6,7 @@ export const fetchUser = createAsyncThunk("user/fetchAll", async () => {
   return user;
 });
 
-const initialState = { item: null };
+const initialState = { item: null, notAuthed: false };
 
 const userSlice = createSlice({
   name: "user",
@@ -17,11 +17,16 @@ const userSlice = createSlice({
   extraReducers: {
     [fetchUser.pending]: (state, action) => ({
       item: null,
+      notAuthed: false,
     }),
     [fetchUser.fulfilled]: (state, action) => ({
       item: action.payload,
+      notAuthed: false,
     }),
-    [fetchUser.rejected]: (state, action) => ({}),
+    [fetchUser.rejected]: (state, action) => ({
+      item: null,
+      notAuthed: true,
+    }),
   },
 });
 

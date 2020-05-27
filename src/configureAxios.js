@@ -13,9 +13,14 @@ const configureAxios = () => {
   });
 
   axios.interceptors.response.use(
-    (response) => new Promise((resolve) => resolve(response.data)),
+    (response) => {
+      return new Promise((resolve) => resolve(response.data));
+    },
     (error) => {
-      return Promise.reject(error.response.data);
+      if (["/login", "/login?logout"].some((url) => error.config.url === url)) {
+        window.location.href = window.location.hostname;
+      }
+      return Promise.reject(error.response?.data);
     }
   );
   axios.defaults.paramsSerializer = (params) => {
