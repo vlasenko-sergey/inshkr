@@ -108,7 +108,7 @@ const StyledCocktails = styled.div`
 `;
 
 export const IngredientPage = (props) => {
-  const { type } = props;
+  const { type, isAdmin } = props;
   const dispatch = useDispatch();
   const ingredient = useSelector((state) => state.ingredient.item);
   const isIngredientPending = useSelector(
@@ -193,7 +193,7 @@ export const IngredientPage = (props) => {
 
   return (
     <StyledIngredientPage>
-      {user && (
+      {user && !isAdmin && (
         <StyledAddToBarIcon onClick={handleAddToBarClick} active={isInBar}>
           <AddToBarIcon />
         </StyledAddToBarIcon>

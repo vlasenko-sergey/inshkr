@@ -20,7 +20,7 @@ function AdminApp() {
           <AdminCreateCocktailPage />
         </Route>
         <Route exact path="/admin/cocktails/:id">
-          <CocktailPage />
+          <CocktailPage isAdmin />
         </Route>
         <Route exact path="/admin/cocktails/:id/edit">
           <AdminCreateCocktailPage />
@@ -47,13 +47,13 @@ function AdminApp() {
           <AdminCreateItemPage type="garnish" />
         </Route>
         <Route exact path="/admin/ingredient/:id">
-          <IngredientPage type="ingredient" />
+          <IngredientPage type="ingredient" isAdmin />
         </Route>
         <Route exact path="/admin/tableware/:id">
-          <IngredientPage type="tableware" />
+          <IngredientPage type="tableware" isAdmin />
         </Route>
         <Route exact path="/admin/garnish/:id">
-          <IngredientPage type="garnish" />
+          <IngredientPage type="garnish" isAdmin />
         </Route>
       </Switch>
     </AdminPageWrapper>
