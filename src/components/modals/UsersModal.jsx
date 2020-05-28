@@ -11,7 +11,7 @@ const authModalStyles = {
     padding: "0",
   },
   overlay: {
-    "z-index": "2",
+    "z-index": "999",
   }
 };
 

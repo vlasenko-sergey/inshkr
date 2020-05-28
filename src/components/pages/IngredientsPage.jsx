@@ -25,6 +25,9 @@ const StyledBackButton = styled.div`
   line-height: 29px;
   margin-bottom: 10px;
   cursor: pointer;
+  position: fixed;
+  left: 30px;
+  top: 15px;
 
   svg {
     width: 20px;
@@ -83,8 +86,8 @@ export const IngredientsPage = (props) => {
   }, []);
 
   const handleBackToBarButtonClick = () => {
-    history.push('/bar/ingredients');
-  }
+    history.push("/bar/ingredients");
+  };
 
   return (
     <div>

@@ -12,6 +12,9 @@ const authModalStyles = {
     transform: "translate(-50%, -50%)",
     bottom: "unset",
   },
+  overlay: {
+    "z-index": "999"
+  }
 };
 
 const StyledButton = styled.div`

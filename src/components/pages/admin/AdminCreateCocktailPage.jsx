@@ -217,7 +217,7 @@ const AdminCreateCocktailPage = () => {
       Swal.fire({
         icon: "success",
         title: "Отлично!",
-        text: "Коктейль был успешно добавлен",
+        text: "Коктейль был успешно сохранён",
       }).then((res) => {
         dispatch(resetCocktail());
         history.replace("/admin/cocktails");

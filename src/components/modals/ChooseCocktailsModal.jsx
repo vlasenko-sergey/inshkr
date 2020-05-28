@@ -17,6 +17,9 @@ const chooseCocktailsModalStyles = {
     top: "50%",
     transform: "translate(-50%, -50%)",
   },
+  overlay: {
+    "z-index": "999"
+  }
 };
 
 const ChooseCocktailsModal = (props) => {
