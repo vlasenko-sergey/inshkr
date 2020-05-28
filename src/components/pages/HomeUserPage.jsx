@@ -106,7 +106,11 @@ const StyledMyBarImage = styled(StyledTopImage)`
 `;
 
 const StyledFavoriteImage = styled(StyledTopImage)`
-  top: -36px;
+  width: 240px;
+  background-size: cover;
+  z-index: 2;
+  left: 50%;
+  top: -41px;
 `;
 
 const StyledRecipesImage = styled(StyledTopImage)`
