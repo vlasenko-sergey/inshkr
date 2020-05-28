@@ -29,7 +29,7 @@ const FilterGroup = (props) => {
 
   const handleFilterClick = (newValue) => {
     if (multiple) {
-      const index = Number(value).findIndex((item) => item === newValue);
+      const index = value.findIndex((item) => Number(item) === newValue);
       if (index > -1) {
         const newValueArray = [...value];
         newValueArray.splice(index, 1);
