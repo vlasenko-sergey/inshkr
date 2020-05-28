@@ -11,7 +11,7 @@ const StyledSpidersImage = styled.img`
   right: 0;
   bottom: 0;
   transform: translateY(102%);
-  transition: all ease-in-out 0.5s;
+  transition: all ease-in-out 0.3s;
 `;
 
 const StyledLeftWeb = styled.div`
@@ -21,7 +21,7 @@ const StyledLeftWeb = styled.div`
   position: absolute;
   right: 44.5px;
   top: 100%;
-  transition: all ease-in-out 0.5s;
+  transition: all ease-in-out 0.3s;
 `;
 
 const StyledRightWeb = styled.div`
@@ -31,7 +31,7 @@ const StyledRightWeb = styled.div`
   position: absolute;
   right: 22.5px;
   top: 100%;
-  transition: all ease-in-out 0.5s;
+  transition: all ease-in-out 0.3s;
 `;
 
 const StyledLink = styled(Link)`
@@ -46,6 +46,8 @@ const StyledLink = styled(Link)`
   padding: 28px 0;
   width: 460px;
   margin: auto;
+  letter-spacing: 0em;
+  transition: all ease-in-out 0.3s;
 
   ::after {
     content: "";
@@ -69,6 +71,8 @@ const StyledLink = styled(Link)`
   }
 
   :hover {
+    letter-spacing: 0.1em;
+
     ${StyledSpidersImage} {
       transform: translateY(150%);
     }
